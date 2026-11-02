@@ -1,28 +1,40 @@
-# SoulCraft — Creator v0.3
+# SoulCraft — Creator v0.3.3
 
-Craft update v0.3.2: one self-reported completed goal unlocks Soft Halo, Starlight and Light Ribbon. Equip one at a time, switch freely, or remove it. Cosmetic selection is independent of XP and persists using the existing state key. Existing players with a completed goal unlock the choices immediately. Effects use CSS and respect both reduced-motion preferences and the in-app Motion control. No additional image generation, AI service or database is involved.
+Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
-Naming update v0.3.1: optionally name your Soul at awakening or use “Name your Soul” / “Rename” on its card later. Names are plain text, up to 24 Unicode code points, with normalized spacing; an empty name uses the elemental default. Existing v0.3 saves retain their goals, XP, and origin. Name changes do not award XP. See ROADMAP.md for the proposed next gates.
+## Implemented
 
-## Language
+- Five elemental origins and one Evolve Soul awakening.
+- Optional Soul naming and renaming (up to 24 Unicode code points); existing saved progress is retained.
+- One self-reported daily goal, awarding 40 local XP at most once per device-local calendar day.
+- Three reversible cosmetic effects: Soft Halo, Starlight and Light Ribbon. One may be equipped at a time, changed, or removed. Craft does not award extra XP.
+- Browser-local persistence using `localStorage` key `soulcraft.creator.v03`; tabs synchronize through storage events.
+- Save my Soul: versioned JSON backup of supported local state, including private goals. The backup is **not encrypted**.
+- Restore my Soul: validation and preview before overwrite confirmation. Restore replaces, rather than merges, current progress. A backup of existing progress is offered before replacement.
+- Share my Soul: locally generated 900×1200 PNG with an allowlist of name, origin, XP, cosmetic effect and standard Site link. Private goals and progress events are excluded from the card.
+- English-first UI, reduced-motion support and an in-app Motion control.
 
-English is the default product language for international accessibility, including Essence narration, controls, stage labels, validation, and accessibility labels. Existing user-written goals remain exactly as entered. The storage key and state schema are unchanged by this language update.
+## Run locally
 
-Browser-local vertical slice based on the SoulCraft v0.2 interaction model and newly generated elemental character references. This is a separate private demonstration, not an update to the public GitHub project.
+From this directory:
 
-Choose one of five origins, awaken one Evolve Soul, write a daily goal, self-report completion and receive 40 local XP once per device-local calendar day. Progress persists in localStorage under `soulcraft.creator.v03`; tabs synchronize through storage events. Skipped days do not reduce XP. A reset requires confirmation. Reduced-motion preferences are respected. XP 40 and 80 unlock a glow and additional sparkle; these are provisional visual states, not complete character evolutions.
+```sh
+node --test model.test.mjs portability.test.mjs
+python -m http.server 8000 --directory dist
+```
 
-No backend, identity, external AI, GFLO rewards, sensitive journaling, or automatic proof verification. Local storage can be cleared or edited and the device clock can be changed; this is not a secure reward ledger. Earth and Essence artwork retain some generated halo. Art poses and canvases are not a finalized animation sheet.
+Then open `http://localhost:8000`. Static files use browser ES modules; no build or dependency installation is required.
 
-Run the model checks: `node --test model.test.mjs`. Serve `dist/` with any static HTTP server. Code uses ES modules.
+## Boundaries
 
-Original model reference: https://github.com/elanmust-GFLOer/SoulCraft/blob/main/prototypes/evolve-soul-elemental-renderer-v0.2.html
+This is a prototype, not a secure activity or XP ledger. Goal completion is self-reported; local data and the device clock can be edited. There is no backend, cloud/email sync, external AI, verified activity proof, GFLO rewards or Expo implementation. A share link is not a backup or account access link. Localhost, GitHub Pages and the separate hosted Site have independent browser storage; use Save/Restore to transfer progress.
 
+The 0/40/80 XP glow and sparkle states are **not** complete, recognizably distinct character evolutions. Earlier Genesis and simulated 3-of-5 fusion are archived under [prototypes](../prototypes/); fusion is **not** part of Creator v0.3.3. Elemental design notes in [docs](../docs/ELEMENTAL-TRAITS-v0.1.md) describe proposed visuals, not validated psychological traits.
 
-## Portability update v0.3.3
+## Release history
 
-Save my Soul downloads a versioned JSON backup containing all supported browser-local state, including private goals. Files are not encrypted. Restore my Soul checks the format, calendar dates, state version, field lengths, known origins/effects, and reward uniqueness before showing a preview. Confirmation replaces rather than merges current progress; a download of the current state is offered first. Storage must accept the imported state before the displayed Soul changes. No file is uploaded.
+- v0.3.1 — optional naming and renaming.
+- v0.3.2 — three reversible cosmetic craft effects.
+- v0.3.3 — JSON backup/validated restore and privacy-scoped PNG sharing.
 
-Share my Soul creates a local 900×1200 PNG using an explicit allowlist of name, element, XP, effect and the standard Site URL. The app can download the image, invoke the device share sheet where supported, or copy the standard link. Private goals and progress events are never passed to the card renderer or share sheet. The link opens the private prototype; it is not a restore link or an access grant. No email service or cloud sync has been introduced.
-
-Checks: `node --test model.test.mjs portability.test.mjs`.
+See the [project README](../README.md), [Creator roadmap](ROADMAP.md), and [overall roadmap](../docs/ROADMAP.md). Artwork and animation sheets remain provisional.

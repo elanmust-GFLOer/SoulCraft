@@ -1,43 +1,27 @@
-SoulCraft 
+# SoulCraft
 
-One Soul. Three Lenses. Five Elements. A Shared Essence.
+One Soul. Three lenses. Five elemental origins.
 
+SoulCraft is an early browser-local prototype. One Evolve Soul develops through Creator (action), with Companion (relationship) and Spark (reflection) planned as later limited previews. Essence Soul is the humanoid frontend guide.
 
-SoulCraft is an early-stage game-like, AI-assisted reflective companion concept. Each player develops one Evolve Soul through three lenses: Creator (action), Companion (relationship), and Spark (perception).
+## Current implementation — Creator v0.3.3
 
+Complete Creator source is in [`creator/`](creator/README.md): five origins, awakening, optional naming, one self-reported daily goal worth 40 local XP, three reversible cosmetic effects, JSON backup/validated restore, and a private-goal-free PNG share card. Progress is stored in the browser. No dependency installation or build is needed.
 
-Elemental model
+```sh
+cd creator
+node --test model.test.mjs portability.test.mjs
+python -m http.server 8000 --directory dist
+```
 
-The five selectable origins are Fire, Water, Earth, Air, and Wood. An Evolve Soul begins as a softly pulsing elemental bubble. Later, it can integrate up to three of five elements, yielding visual variations and specific fusions such as Fire + Water + Wood â†’ Geyser Rose.
+Open http://localhost:8000. Localhost, GitHub Pages and the hosted Site each have separate browser storage; use Save my Soul / Restore my Soul to transfer progress.
 
+The [owner-private test Site](https://soulcraft-creator-gabriel-v03.tealoffer2.chatgpt.site/) is deployed separately. GitHub and Sites have independent source/deployment histories; a GitHub commit alone does not update that Site. The root GitHub Pages entrypoint remains the earlier v0.2 demo; the Creator entrypoint is `creator/dist/index.html`.
 
-Essence Soul is the human-like frontend guide and a metaphor for shared community essence. It is not a sixth selectable element, an autonomous mind, or a claim of AI consciousness.
+## Evidence and boundaries
 
+Node tests cover daily reward uniqueness, save migration, naming, craft, backup validation and share privacy. This is a prototype with self-reported actions and editable local XP, not a secure reward ledger or verified activity proof.
 
-Try the current prototype
+AI, server accounts, cloud/email backups, Companion/Spark interactions, GFLO/OctoPush integration and Expo are not implemented. Earlier Genesis and v0.2 prototypes remain in [`prototypes/`](prototypes/); their simulated 3-of-5 fusion is not implemented in Creator.
 
-Open prototypes/evolve-soul-genesis.html in a browser. It runs locally without a build step. The project owner has confirmed that the HTML demo works on their device. This is a standalone prototype, not a production app.
-
-
-The prototype demonstrates initial element choice, an awakening transition, simulated Creator XP, and up-to-three element integration. The visuals and rewards are provisional. There is no backend, account system, connected AI, or on-chain integration.
-
-
-Scope
-
-
-MVP focus: one deep Creator loop, limited Companion and Spark previews.
-
-Target application stack: React Native + Expo with web support; not implemented yet.
-
-Future only: GFLO ID_Entity / OctoPush interoperability and collective Essence features.
-
-Safety: reflective rather than predictive spiritual content; no diagnosis, spiritual authority, dependency-building, or automatic sharing of private journal/chat data.
-
-
-See the roadmap for implementation order and decision status.
-
-
-Project status
-
-Concept and local proof of concept. No verified production deployment, real-user retention results, or independent security audit. Brand/domain/trademark checks still needed.
-
+See [roadmap](docs/ROADMAP.md), [Creator details](creator/README.md), and [elemental design notes](docs/ELEMENTAL-TRAITS-v0.1.md). Design notes describe intended traits, not validated personality or psychological claims.

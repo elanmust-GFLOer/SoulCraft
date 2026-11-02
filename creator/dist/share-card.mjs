@@ -1,0 +1,25 @@
+import {ELEMENTS} from './model.mjs';
+export async function drawShareCard(canvas,summary){
+  canvas.width=900;canvas.height=1200;
+  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Card rendering is not available in this browser.');
+  const color=ELEMENTS[summary.origin].color;
+  const gradient=ctx.createLinearGradient(0,0,900,1200);gradient.addColorStop(0,'#241830');gradient.addColorStop(.55,'#151226');gradient.addColorStop(1,'#0d1020');ctx.fillStyle=gradient;ctx.fillRect(0,0,900,1200);
+  const aura=ctx.createRadialGradient(450,470,20,450,470,380);aura.addColorStop(0,color+'35');aura.addColorStop(1,color+'00');ctx.fillStyle=aura;ctx.fillRect(0,120,900,800);
+  ctx.fillStyle='#dbc5ec';for(let i=0;i<65;i++){const x=(i*173+41)%850+25,y=(i*97+73)%1000+30;ctx.globalAlpha=.15+(i%5)*.1;ctx.beginPath();ctx.arc(x,y,i%3===0?2:1,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
+  ctx.strokeStyle='#d8a7ef55';ctx.lineWidth=2;ctx.strokeRect(28,28,844,1144);
+  ctx.textAlign='center';ctx.fillStyle='#f6e5ff';ctx.font='48px Georgia, serif';ctx.fillText('SoulCraft',450,105);ctx.font='14px system-ui, sans-serif';ctx.fillStyle='#c5aecf';ctx.fillText('ONE SOUL. A JOURNEY OF YOUR OWN.',450,142);
+  const image=new Image();image.src=`assets/${summary.origin}.png`;await image.decode();
+  const size=Math.min(600/image.naturalWidth,590/image.naturalHeight),w=image.naturalWidth*size,h=image.naturalHeight*size;
+  if(summary.craft==='Soft Halo'){ctx.save();ctx.shadowColor=color;ctx.shadowBlur=35;ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(450,475,252,0,Math.PI*2);ctx.stroke();ctx.restore();}
+  if(summary.craft==='Light Ribbon'){ctx.save();ctx.translate(450,485);ctx.rotate(-.35);ctx.strokeStyle=color;ctx.shadowColor=color;ctx.shadowBlur=14;ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,0,310,110,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
+  if(summary.craft==='Starlight'){ctx.fillStyle=color;ctx.font='40px Georgia, serif';for(const [x,y] of [[165,360],[730,430],[230,650],[675,260]])ctx.fillText('✧',x,y);}
+  ctx.drawImage(image,450-w/2,470-h/2,w,h);
+  let fontSize=58;do{ctx.font=`${fontSize}px Georgia, serif`;if(ctx.measureText(summary.name).width<=770)break;fontSize-=2;}while(fontSize>22);
+  ctx.fillStyle='#fff2fc';ctx.fillText(summary.name,450,825);ctx.fillStyle=color;ctx.font='22px system-ui, sans-serif';ctx.fillText(summary.element.toUpperCase()+' SOUL',450,870);
+  ctx.strokeStyle=color+'66';ctx.beginPath();ctx.moveTo(240,908);ctx.lineTo(660,908);ctx.stroke();ctx.font='40px Georgia, serif';ctx.fillStyle='#f6e5ff';ctx.fillText(summary.xp+' CREATOR XP',450,966);
+  ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#bca7c8';ctx.fillText(summary.craft||'A small Soul. A story unfolding.',450,1005);
+  ctx.font='18px Georgia, serif';ctx.fillStyle='#e6c7ef';ctx.fillText('Small Soul. Big Journey. Brighter World.',450,1060);
+  ctx.font='14px system-ui, sans-serif';ctx.fillStyle='#baa8c8';const url=summary.url.replace('https://','');const split=url.indexOf('.tealoffer2');ctx.fillText('https://'+url.slice(0,split),450,1105);ctx.fillText(url.slice(split),450,1127);
+  ctx.font='11px system-ui, sans-serif';ctx.fillStyle='#9989a7';ctx.fillText('LOCAL GAME SCORE · PRIVATE PROTOTYPE · SIGN-IN MAY BE REQUIRED',450,1153);
+  return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('The card could not be created.')),'image/png'));
+}

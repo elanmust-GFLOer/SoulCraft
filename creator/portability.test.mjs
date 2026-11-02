@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {emptyState} from './dist/model.mjs';
+import {createBackup,parseBackup,shareSummary,SOULCRAFT_URL} from './dist/portability.mjs';
+const sample=()=>({...emptyState(),origin:'air',name:'Zéphyr',born:true,craft:'starlight',motion:false,events:[{day:'2026-11-01',goal:'PRIVATE FINISHED GOAL',xp:40}],goal:{day:'2026-11-02',text:'PRIVATE ACTIVE GOAL'}});
+test('backup round trip preserves every supported field and private goal',()=>{const s=sample();assert.deepEqual(parseBackup(createBackup(s)).state,s);});
+test('share payload is an explicit allowlist with no private history or goals',()=>{const s=shareSummary(sample());assert.deepEqual(Object.keys(s),['name','element','origin','xp','craft','url']);assert.equal(s.url,SOULCRAFT_URL);assert.equal(JSON.stringify(s).includes('PRIVATE'),false);assert.equal(s.xp,40);});
+test('invalid files, unsupported versions and excessive input are rejected rather than reset',()=>{for(const text of ['bad','null','{}',JSON.stringify({format:'soulcraft-backup',backupVersion:99}),' '.repeat(2*1024*1024+1)])assert.throws(()=>parseBackup(text));});
+test('duplicate rewards, impossible dates, locked effects and invalid goals are rejected',()=>{for(const modify of [s=>s.events.push({...s.events[0]}),s=>s.events[0].day='2026-02-30',s=>s.events[0].xp=999,s=>s.craft='unknown',s=>s.name='x'.repeat(25),s=>s.goal.day='2026-11-01',s=>s.born=false,s=>s.origin='__proto__',s=>s.injected='unsupported',s=>s.goal.text='',s=>s.events[0].goal='x'.repeat(161)]){const obj=JSON.parse(createBackup(sample()));modify(obj.state);assert.throws(()=>parseBackup(JSON.stringify(obj)));}});
+test('backup preview parsing does not mutate current progress',()=>{const current=sample(),before=JSON.stringify(current);const incoming={...sample(),name:'Another Soul'};const preview=parseBackup(createBackup(incoming));assert.equal(preview.state.name,'Another Soul');assert.equal(JSON.stringify(current),before);});
+test('older state without name or craft can be imported without losing history',()=>{const data=JSON.parse(createBackup(sample()));delete data.state.name;delete data.state.craft;const state=parseBackup(JSON.stringify(data)).state;assert.equal(state.name,'');assert.equal(state.craft,null);assert.deepEqual(state.events,sample().events);});

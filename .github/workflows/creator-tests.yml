@@ -1,0 +1,38 @@
+name: Creator checks
+
+on:
+  push:
+    paths:
+      - 'creator/**'
+      - '.github/workflows/creator-tests.yml'
+  pull_request:
+    paths:
+      - 'creator/**'
+      - '.github/workflows/creator-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run Creator model and portability tests
+        working-directory: creator
+        run: node --test model.test.mjs portability.test.mjs
+      - name: Check static entrypoint and module files
+        run: |
+          test -f creator/dist/index.html
+          test -f creator/dist/app.mjs
+          test -f creator/dist/model.mjs
+          test -f creator/dist/portability.mjs
+          test -f creator/dist/share-card.mjs
+          test -f creator/dist/style.css
+          for element in fire water earth air wood essence; do
+            test -f "creator/dist/assets/$element.png"
+          done

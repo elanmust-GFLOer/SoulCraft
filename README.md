@@ -16,7 +16,7 @@ python -m http.server 8000 --directory dist
 
 Open http://localhost:8000. Localhost, GitHub Pages and the hosted Site each have separate browser storage; use Save my Soul / Restore my Soul to transfer progress.
 
-The [owner-private test Site](https://soulcraft-creator-gabriel-v03.tealoffer2.chatgpt.site/) is deployed separately. GitHub and Sites have independent source/deployment histories; a GitHub commit alone does not update that Site. The root GitHub Pages entrypoint remains the earlier v0.2 demo; the Creator entrypoint is `creator/dist/index.html`.
+The [owner-private test Site](https://soulcraft-creator-gabriel-v03.tealoffer2.chatgpt.site/) is deployed separately. GitHub and Sites have independent source/deployment histories; a GitHub commit alone does not update that Site. The root GitHub Pages entrypoint redirects to Creator v0.3.3 at `creator/dist/`; earlier v0.2 demos remain under `prototypes/`. GitHub Pages deployment status and browser behavior should be checked independently.
 
 ## Evidence and boundaries
 

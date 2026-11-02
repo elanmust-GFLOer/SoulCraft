@@ -6,7 +6,7 @@ Updated 2026-11-02. Implemented prototype behavior and future gates are separate
 
 - Earlier standalone Genesis and v0.2 Elemental Renderer demos in `prototypes/`.
 - Creator v0.3–v0.3.3 in `creator/`: daily local goal/XP, persistence, naming, cosmetic craft, JSON backup/validated restore and local PNG sharing.
-- The root Pages entrypoint remains the older v0.2 demo; Creator is a separate app.
+- The root Pages entrypoint redirects to Creator v0.3.3 at `creator/dist/`; earlier v0.2 demos remain archived in `prototypes/`.
 
 ## Next gate
 

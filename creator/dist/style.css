@@ -56,3 +56,43 @@ body.no-motion .shield-visual{animation:none}
 .armor-card .craft-status{margin-top:16px}
 @media(max-width:760px){.guardian-shell{width:287px;height:296px}.guardian-cockpit{top:calc(50% - 80px);width:80px;height:88px}.guardian-cockpit img{width:82px;height:90px}.guardian-cockpit-frame{top:calc(50% - 83px);width:89px;height:97px}.armor-card{padding:20px 16px}}
 @media(max-width:410px){.armor-options{grid-template-columns:1fr}}
+
+/* v0.4.3: cockpit polish; same Soul, existing Armor Path and Shield state. */
+.guardian-shell{
+  width:320px;height:330px;filter:drop-shadow(0 7px 11px #030812bf) drop-shadow(0 0 13px #b3dd8b48);
+}
+.guardian-cockpit{
+  top:calc(50% - 100px);width:114px;height:125px;
+  border-radius:49% 49% 40% 40%;
+  background:radial-gradient(ellipse at 47% 34%,#6ea77d5c,#1b453a 58%,#091923 94%);
+  box-shadow:inset 0 0 19px #b6efb58f,0 0 25px #b9f1bc45;
+}
+.guardian-cockpit img{
+  width:122px;height:128px;object-fit:contain;
+  filter:drop-shadow(0 0 10px #d6ffbbaa) brightness(1.12);
+}
+.guardian-cockpit-frame{
+  top:calc(50% - 104px);width:123px;height:134px;
+  border:6px solid #bddf9b;border-radius:50% 50% 38% 38%;
+  background:linear-gradient(132deg,#e1fff24b 2%,transparent 36%,#ecfff221 56%,transparent 80%);
+  box-shadow:inset 0 0 12px #c8ffda91,0 0 17px #c7f5b672,0 0 3px #f4ffde;
+}
+.scene[data-armor-active="true"] .shield-visual{
+  width:235px;height:242px;
+  animation:none;
+  transform:translate(89px,37px) scale(.81);
+  filter:drop-shadow(0 0 8px #d1f0a478);
+}
+.scene[data-armor-active="true"] .scene-caption{bottom:3px}
+@media(max-width:760px){
+  .guardian-shell{width:287px;height:296px}
+  .guardian-cockpit{top:calc(50% - 92px);width:101px;height:113px}
+  .guardian-cockpit img{width:109px;height:115px}
+  .guardian-cockpit-frame{top:calc(50% - 95px);width:110px;height:122px}
+  .scene[data-armor-active="true"] .shield-visual{
+    width:211px;height:223px;transform:translate(78px,38px) scale(.77);
+  }
+}
+@media(max-width:380px){.scene[data-armor-active="true"] .shield-visual{transform:translate(64px,39px) scale(.72)}}
+body.no-motion .guardian-shell,body.no-motion .guardian-cockpit img{animation:none!important}
+@media(prefers-reduced-motion:reduce){.guardian-shell,.guardian-cockpit img{animation:none!important}}

@@ -47,3 +47,12 @@ test('preview only becomes persisted after explicit equip; UI is not a new Soul'
  assert.match(app,/armorPreview=null;persist\(\);render\(\)/);
  assert.match(app,/\$\('character'\)\.hidden=!state\.born\|\|!!activeArmor/);
 });
+
+test('v0.4.3 cockpit has larger readable Soul and all five signature sculpted plate sets',()=>{
+ const css=load('style.css'),html=load('index.html'),app=load('app.mjs');
+ assert.match(html,/CREATOR · v0\.4\.3/);
+ assert.match(css,/\.guardian-cockpit img\{\s*width:122px;height:128px/);
+ assert.match(css,/\.scene\[data-armor-active="true"\] \.shield-visual/);
+ assert.match(app,/dataset\.armorActive=String\(!!activeArmor\)/);
+ for(const id of Object.keys(ARMOR_PATHS))assert.match(load('assets/armor/'+id+'.svg'),/signature sculpted plates/);
+});

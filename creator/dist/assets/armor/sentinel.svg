@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 330" role="img" aria-label="sentinel Guardian shell">
 <defs><linearGradient id="stone" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e7dccb"/><stop offset=".46" stop-color="#9c9485"/><stop offset="1" stop-color="#4c6158"/></linearGradient><linearGradient id="crystal" x2=".8" y2="1"><stop stop-color="#f7ffca"/><stop offset=".6" stop-color="#a0e9cf"/><stop offset="1" stop-color="#4e917c"/></linearGradient></defs>
-<g stroke="#dee7b2" stroke-width="3" stroke-linejoin="round">
+<g stroke="#e7f4c7" stroke-width="3" stroke-linejoin="round">
 <path fill="url(#stone)" d="M118 150 L113 41 L125 15 L130 157 L113 192 L128 211 L109 199Z"/>
 <path fill="url(#stone)" d="M202 150 L207 41 L195 15 L190 157 L207 192 L192 211 L211 199Z"/>
 <path fill="url(#stone)" d="M127 152 L100 159 L97 248 L128 261 L127 206Z"/>
@@ -16,6 +16,8 @@
 <path fill="url(#crystal)" d="M144 24 L160 -8 L176 24 L169 37 L151 37Z"/>
 <path fill="url(#crystal)" d="M141 165 L160 180 L179 165 L170 205 L150 205Z"/>
 </g>
+<!-- v0.4.3 signature sculpted plates: distinguish this path at a glance. -->
+<g stroke="#d8fff0" stroke-width="2.4" stroke-linejoin="round"><path d="M115 88 96 22 113 -5 133 68Z" fill="url(#crystal)"/><path d="m205 88 19-66-17-27-20 73Z" fill="url(#crystal)"/><path d="M96 184 78 207 92 254 107 223Z" fill="url(#stone)"/><path d="m224 184 18 23-14 47-15-31Z" fill="url(#stone)"/><path d="M105 249 99 314M215 249l6 65" fill="none" stroke-width="3"/><path d="M151 210h18l-9 28Z" fill="url(#crystal)"/></g>
 <!-- Central opening deliberately stays transparent for the one existing Soul. -->
 <g fill="none" stroke="#a0e9cf" stroke-width="3" opacity=".82">
 <path d="M116 106 Q112 48 160 43 Q208 48 204 106 L199 161 L121 161Z"/>

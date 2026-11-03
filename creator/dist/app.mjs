@@ -30,6 +30,8 @@ function render(){
  $('character').src=`assets/${state.origin}.png`;
  const earthForm=earthEvolution(state);$('scene').dataset.earthForm=String(earthForm);
  const activeArmor=armorUnlocked(state)?(armorPreview||state.armorPath):null;
+ $('scene').dataset.armorActive=String(!!activeArmor);
+ $('scene').dataset.armorPath=activeArmor||'classic';
  $('guardian-shell').hidden=!activeArmor;
  $('guardian-cockpit').hidden=!activeArmor;
  $('guardian-cockpit-frame').hidden=!activeArmor;

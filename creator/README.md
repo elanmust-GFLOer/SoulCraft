@@ -1,4 +1,4 @@
-# SoulCraft — Creator v0.4.2 (Guardian Cockpit Prototype)
+# SoulCraft — Creator v0.4.3 (Guardian Cockpit Polish)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
@@ -83,3 +83,7 @@ At 80 XP, an Earth Soul can **preview** any of five SVG Guardian shell silhouett
 Armor Path is an optional `armorPath` field. It is allowed only for an awakened 80-XP Earth Soul; preexisting v1 JSON backups remain supported. Shield, cosmetic craft, name, private goals and local XP are preserved. New share PNG cards depict the equipped shell, the existing one Soul in its cockpit and a separately chosen shield. No armor path adds combat powers or a second Soul.
 
 **Visual scope:** five simple, programmatically authored vector shell silhouettes for implementation testing. They are not the finished illustrated concept-poster assets; Android aesthetic and layout acceptance remain open. The user can choose again; no irreversible path locks have been introduced.
+
+## v0.4.3 — cockpit visual refinement
+
+The existing Earth Guardian cockpit now displays a larger Soul with a clearer crystalline frame. Each of five distinct armor SVGs includes additional path-specific shoulder/arm/leg sculpted forms, and the active shield is scaled/offset beside the suit rather than covering its cockpit. Newly generated share PNGs use a larger Soul and cockpit frame. This is **presentation-only**: no data schema, XP economy, armor locks, save, craft, or mood-privacy behavior changed. The SVG visuals are still prototype assets rather than illustrated final production art. Mobile visual approval remains pending.

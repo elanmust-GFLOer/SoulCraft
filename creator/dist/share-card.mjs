@@ -19,9 +19,9 @@ export async function drawShareCard(canvas,summary){
     // The existing Evolve Soul is rendered once, INSIDE the armor cockpit.
     const shell=new Image();shell.src='assets/armor/'+summary.armorPath+'.svg';await shell.decode();
     ctx.drawImage(shell,170,185,560,580);
-    ctx.drawImage(image,382,302,136,142);
+    ctx.drawImage(image,365,281,170,180);
     ctx.save();ctx.lineWidth=9;ctx.strokeStyle='#c2ed9b';ctx.shadowColor='#bedd8b';ctx.shadowBlur=15;
-    ctx.beginPath();ctx.ellipse(450,370,79,92,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+    ctx.beginPath();ctx.ellipse(450,368,92,103,0,0,Math.PI*2);ctx.stroke();ctx.restore();
   }else{
     ctx.drawImage(image,450-w/2,470-h/2,w,h);
   }

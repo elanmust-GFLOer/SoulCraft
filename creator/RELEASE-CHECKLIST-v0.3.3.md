@@ -18,8 +18,8 @@ Use a newly created Soul, without resetting it during the test.
 - [ ] Give the Earth Soul a name; reload; confirm origin and name persist.
 - [ ] Save a daily goal, mark it complete, verify +40 XP and that a second completion the same day does not award more.
 - [ ] Equip, change and remove one cosmetic effect; verify it persists after reload.
-- [ ] Download **Save my Soul** JSON; retain a safe copy. It includes private goals and is unencrypted.
-- [ ] Run **Restore my Soul** using that backup, inspect the preview, confirm overwrite, then verify name/origin/XP/effect/goals.
+- [x] User reports successful Save/Restore with the newly created Earth Soul on Android (2026-11-03). The exact retained-file handling was not separately confirmed. JSON backups include private goals and are unencrypted.
+- [x] User reports a successful Restore my Soul flow (2026-11-03); preview, confirmation and individual restored fields were not independently observed or itemized. Follow-up field-by-field verification remains open.
 - [ ] Generate **Share my Soul** PNG; confirm the image omits private goals.
 - [ ] Check reduced-motion mode and small-screen layout.
 

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {emptyState,restore,saveGoal,completeGoal,xpOf,localDay,renameSoul,normalizeName,craftUnlocked,equipCraft,earthEvolution,SHIELDS,shieldUnlocked,equipShield,suggestedShield} from './dist/model.mjs';
+import {emptyState,restore,saveGoal,completeGoal,xpOf,localDay,renameSoul,normalizeName,craftUnlocked,equipCraft,earthEvolution,SHIELDS,shieldUnlocked,equipShield,suggestedShield,ARMOR_PATHS,armorUnlocked,equipArmor} from './dist/model.mjs';
 test('awakening is required before a daily goal can earn XP',()=>{const s=emptyState();assert.equal(saveGoal(s,'Create','2026-11-02'),s);assert.equal(xpOf(completeGoal(s,'2026-11-02')),0);});
 test('one self-reported goal earns only one reward per local day, including after reload',()=>{let s={...emptyState(),born:true};s=saveGoal(s,'Build one small thing','2026-11-02');s=completeGoal(s,'2026-11-02');s=restore(JSON.stringify(s));assert.equal(xpOf(s),40);assert.equal(completeGoal(s,'2026-11-02'),s);assert.equal(saveGoal(s,'Repeat','2026-11-02'),s);s=saveGoal(s,'Another step','2026-11-03');s=completeGoal(s,'2026-11-03');assert.equal(xpOf(s),80);});
 test('yesterday goal cannot be claimed today and skipping days never removes progress',()=>{let s={...emptyState(),born:true};s=saveGoal(s,'A step','2026-11-01');assert.equal(completeGoal(s,'2026-11-02'),s);s=completeGoal(s,'2026-11-01');assert.equal(xpOf(restore(JSON.stringify(s))),40);s=saveGoal(s,'Return freely','2026-11-10');assert.equal(xpOf(s),40);});
@@ -17,3 +17,13 @@ test('Earth morphs derive from prior XP and retain existing saves',()=>{const ba
 test('all five Earth shields can be equipped, switched and removed without altering XP or craft',()=>{const state={...emptyState(),born:true,origin:'earth',name:'StoneR',craft:'halo',events:[{day:'2026-11-01',goal:'A',xp:40},{day:'2026-11-02',goal:'B',xp:40}]};assert.equal(shieldUnlocked(state),true);let now=state;for(const id of Object.keys(SHIELDS)){now=equipShield(now,id);now=restore(JSON.stringify(now));assert.equal(now.shield,id);assert.equal(now.name,'StoneR');assert.equal(now.craft,'halo');assert.deepEqual(now.events,state.events);assert.equal(xpOf(now),80);}assert.equal(Object.keys(SHIELDS).length,5);assert.equal(equipShield(now,null).shield,null);});
 test('shields are locked before 80 XP and for non-Earth origins',()=>{for(const state of [{...emptyState(),born:true,origin:'earth',events:[{day:'2026-11-01',goal:'A',xp:40}]},{...emptyState(),born:true,origin:'water',events:[{day:'2026-11-01',goal:'A',xp:40},{day:'2026-11-02',goal:'B',xp:40}]}]){assert.equal(shieldUnlocked(state),false);assert.equal(equipShield(state,'core'),state);}const ready={...emptyState(),born:true,origin:'earth',events:[{day:'2026-11-01',goal:'A',xp:40},{day:'2026-11-02',goal:'B',xp:40}]};assert.equal(equipShield(ready,'__proto__'),ready);assert.equal(equipShield(ready,'wrong'),ready);});
 test('mood recommendations are optional and map only known choices',()=>{assert.equal(suggestedShield('steady'),'bulwark');assert.equal(suggestedShield('perspective'),'reflective');assert.equal(suggestedShield('care'),'bloom');assert.equal(suggestedShield('focus'),'core');assert.equal(suggestedShield('calm'),'halo');assert.equal(suggestedShield('__proto__'),null);assert.equal(suggestedShield(undefined),null);});
+
+test('five armor identities can be previewed and saved without XP loss',()=>{
+  const base={...emptyState(),born:true,origin:'earth',name:'StoneR',shield:'reflective',craft:'halo',events:[{day:'2026-11-01',goal:'A',xp:40},{day:'2026-11-02',goal:'B',xp:40}]};
+  assert.equal(Object.keys(ARMOR_PATHS).length,5);assert.equal(armorUnlocked(base),true);
+  for(const path of Object.keys(ARMOR_PATHS)){const actual=restore(JSON.stringify(equipArmor(base,path)));assert.equal(actual.armorPath,path);assert.equal(xpOf(actual),80);assert.equal(actual.shield,'reflective');assert.equal(actual.craft,'halo');assert.equal(actual.name,'StoneR');}
+  assert.equal(equipArmor(base,'__proto__'),base);assert.equal(equipArmor(base,'bad'),base);
+  assert.equal(equipArmor({...base,origin:'water'},'titan').armorPath,null);
+  assert.equal(equipArmor({...base,events:base.events.slice(0,1)},'titan').armorPath,null);
+  assert.equal(equipArmor(equipArmor(base,'titan'),null).armorPath,null);
+});

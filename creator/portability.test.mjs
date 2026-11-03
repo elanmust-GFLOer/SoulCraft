@@ -4,7 +4,7 @@ import {emptyState} from './dist/model.mjs';
 import {createBackup,parseBackup,shareSummary,SOULCRAFT_URL} from './dist/portability.mjs';
 const sample=()=>({...emptyState(),origin:'air',name:'Zéphyr',born:true,craft:'starlight',motion:false,events:[{day:'2026-11-01',goal:'PRIVATE FINISHED GOAL',xp:40}],goal:{day:'2026-11-02',text:'PRIVATE ACTIVE GOAL'}});
 test('backup round trip preserves every supported field and private goal',()=>{const s=sample();assert.deepEqual(parseBackup(createBackup(s)).state,s);});
-test('share payload is an explicit allowlist with no private history or goals',()=>{const s=shareSummary(sample());assert.deepEqual(Object.keys(s),['name','element','origin','xp','craft','shield','url']);assert.equal(s.url,SOULCRAFT_URL);assert.equal(JSON.stringify(s).includes('PRIVATE'),false);assert.equal(s.xp,40);});
+test('share payload is an explicit allowlist with no private history or goals',()=>{const s=shareSummary(sample());assert.deepEqual(Object.keys(s),['name','element','origin','xp','craft','shield','armorPath','url']);assert.equal(s.url,SOULCRAFT_URL);assert.equal(JSON.stringify(s).includes('PRIVATE'),false);assert.equal(s.xp,40);});
 test('invalid files, unsupported versions and excessive input are rejected rather than reset',()=>{for(const text of ['bad','null','{}',JSON.stringify({format:'soulcraft-backup',backupVersion:99}),' '.repeat(2*1024*1024+1)])assert.throws(()=>parseBackup(text));});
 test('duplicate rewards, impossible dates, locked effects and invalid goals are rejected',()=>{for(const modify of [s=>s.events.push({...s.events[0]}),s=>s.events[0].day='2026-02-30',s=>s.events[0].xp=999,s=>s.craft='unknown',s=>s.name='x'.repeat(25),s=>s.goal.day='2026-11-01',s=>s.born=false,s=>s.origin='__proto__',s=>s.injected='unsupported',s=>s.goal.text='',s=>s.events[0].goal='x'.repeat(161)]){const obj=JSON.parse(createBackup(sample()));modify(obj.state);assert.throws(()=>parseBackup(JSON.stringify(obj)));}});
 test('backup preview parsing does not mutate current progress',()=>{const current=sample(),before=JSON.stringify(current);const incoming={...sample(),name:'Another Soul'};const preview=parseBackup(createBackup(incoming));assert.equal(preview.state.name,'Another Soul');assert.equal(JSON.stringify(current),before);});
@@ -12,3 +12,13 @@ test('older state without name or craft can be imported without losing history',
 
 test('Earth shield backup and share payload round-trip safely',()=>{const state={...emptyState(),origin:'earth',name:'StoneR',born:true,craft:'halo',shield:'bloom',events:[{day:'2026-11-01',goal:'PRIVATE FIRST',xp:40},{day:'2026-11-02',goal:'PRIVATE SECOND',xp:40}]};const backup=parseBackup(createBackup(state)).state;assert.deepEqual(backup,state);const publicData=shareSummary(state);assert.equal(publicData.shield,'bloom');assert.equal(JSON.stringify(publicData).includes('PRIVATE'),false);});
 test('legacy backups without shield are supported, invalid or locked shield rejected',()=>{const state={...emptyState(),origin:'earth',name:'StoneR',born:true,events:[{day:'2026-11-01',goal:'One',xp:40},{day:'2026-11-02',goal:'Two',xp:40}]};let previous=JSON.parse(createBackup(state));delete previous.state.shield;assert.equal(parseBackup(JSON.stringify(previous)).state.shield,null);for(const shield of ['not-a-shield','__proto__',42]){const backup=JSON.parse(createBackup(state));backup.state.shield=shield;assert.throws(()=>parseBackup(JSON.stringify(backup)));}for(const modify of [s=>s.events.pop(),s=>s.origin='water',s=>s.born=false]){const data=JSON.parse(createBackup({...state,shield:'core'}));modify(data.state);assert.throws(()=>parseBackup(JSON.stringify(data)));}});
+
+test('armor path save migration and strict allowlist',()=>{
+ const s={...emptyState(),origin:'earth',name:'StoneR',born:true,shield:'reflective',armorPath:'sentinel',craft:'halo',events:[{day:'2026-11-01',goal:'PRIVATE 1',xp:40},{day:'2026-11-02',goal:'PRIVATE 2',xp:40}]};
+ assert.deepEqual(parseBackup(createBackup(s)).state,s);
+ const pub=shareSummary(s);assert.equal(pub.armorPath,'sentinel');assert.equal(pub.shield,'reflective');assert.equal(JSON.stringify(pub).includes('PRIVATE'),false);
+ const old=JSON.parse(createBackup(s));delete old.state.armorPath;assert.equal(parseBackup(JSON.stringify(old)).state.armorPath,null);
+ for(const change of [d=>d.state.armorPath='__proto__',d=>d.state.armorPath='bad',d=>d.state.origin='water',d=>d.state.events.pop()]){
+  const value=JSON.parse(createBackup(s));change(value);assert.throws(()=>parseBackup(JSON.stringify(value)));
+ }
+});

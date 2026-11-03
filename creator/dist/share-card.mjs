@@ -1,4 +1,4 @@
-import {ELEMENTS,SHIELDS} from './model.mjs';
+import {ELEMENTS,SHIELDS,ARMOR_PATHS} from './model.mjs';
 export function shareUrlLines(raw){const url=new URL(raw),text=url.host+url.pathname;if(text.length<=41)return [url.protocol+'//'+text];const k=Math.max(text.lastIndexOf('/',38),text.lastIndexOf('.',38)),at=k>8?k+1:Math.ceil(text.length/2);return [url.protocol+'//'+text.slice(0,at),text.slice(at)];}
 export async function drawShareCard(canvas,summary){
   canvas.width=900;canvas.height=1200;
@@ -14,8 +14,18 @@ export async function drawShareCard(canvas,summary){
   if(summary.craft==='Soft Halo'){ctx.save();ctx.shadowColor=color;ctx.shadowBlur=35;ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(450,475,252,0,Math.PI*2);ctx.stroke();ctx.restore();}
   if(summary.craft==='Light Ribbon'){ctx.save();ctx.translate(450,485);ctx.rotate(-.35);ctx.strokeStyle=color;ctx.shadowColor=color;ctx.shadowBlur=14;ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,0,310,110,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
   if(summary.craft==='Starlight'){ctx.fillStyle=color;ctx.font='40px Georgia, serif';for(const [x,y] of [[165,360],[730,430],[230,650],[675,260]])ctx.fillText('✧',x,y);}
-  ctx.drawImage(image,450-w/2,470-h/2,w,h);
-  if(summary.origin==='earth'&&summary.xp>=40){const layers=['assets/earth-mantle.svg',...(summary.xp>=80?['assets/earth-crown.svg']:[])];for(const path of layers){const layer=new Image();layer.src=path;await layer.decode();ctx.drawImage(layer,450-w/2,470-h/2,w,h);}}
+  const cockpitArmor=summary.origin==='earth'&&summary.xp>=80&&Object.hasOwn(ARMOR_PATHS,summary.armorPath);
+  if(cockpitArmor){
+    // The existing Evolve Soul is rendered once, INSIDE the armor cockpit.
+    const shell=new Image();shell.src='assets/armor/'+summary.armorPath+'.svg';await shell.decode();
+    ctx.drawImage(shell,170,185,560,580);
+    ctx.drawImage(image,382,302,136,142);
+    ctx.save();ctx.lineWidth=9;ctx.strokeStyle='#c2ed9b';ctx.shadowColor='#bedd8b';ctx.shadowBlur=15;
+    ctx.beginPath();ctx.ellipse(450,370,79,92,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+  }else{
+    ctx.drawImage(image,450-w/2,470-h/2,w,h);
+  }
+  if(!cockpitArmor&&summary.origin==='earth'&&summary.xp>=40){const layers=['assets/earth-mantle.svg',...(summary.xp>=80?['assets/earth-crown.svg']:[])];for(const path of layers){const layer=new Image();layer.src=path;await layer.decode();ctx.drawImage(layer,450-w/2,470-h/2,w,h);}}
   // Shields are public cosmetic choices. Draw only known artwork above the guardian.
   if(summary.origin==='earth'&&summary.xp>=80&&Object.hasOwn(SHIELDS,summary.shield)){
     const overlay=new Image();overlay.src='assets/shields/'+summary.shield+'.svg';await overlay.decode();ctx.drawImage(overlay,450-w/2,470-h/2,w,h);
@@ -24,7 +34,7 @@ export async function drawShareCard(canvas,summary){
   let fontSize=58;do{ctx.font=`${fontSize}px Georgia, serif`;if(ctx.measureText(summary.name).width<=770)break;fontSize-=2;}while(fontSize>22);
   ctx.fillStyle='#fff2fc';ctx.fillText(summary.name,450,825);ctx.fillStyle=color;ctx.font='22px system-ui, sans-serif';ctx.fillText(summary.element.toUpperCase()+' SOUL',450,870);
   ctx.strokeStyle=color+'66';ctx.beginPath();ctx.moveTo(240,908);ctx.lineTo(660,908);ctx.stroke();ctx.font='40px Georgia, serif';ctx.fillStyle='#f6e5ff';ctx.fillText(summary.xp+' CREATOR XP',450,966);
-  ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#bca7c8';const cardDetail=[summary.craft,summary.shield&&Object.hasOwn(SHIELDS,summary.shield)?SHIELDS[summary.shield].name:null].filter(Boolean).join(' · ');ctx.fillText(cardDetail||'A small Soul. A story unfolding.',450,1005);
+  ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#bca7c8';const cardDetail=[summary.craft,summary.shield&&Object.hasOwn(SHIELDS,summary.shield)?SHIELDS[summary.shield].name:null,summary.armorPath&&Object.hasOwn(ARMOR_PATHS,summary.armorPath)?ARMOR_PATHS[summary.armorPath].name:null].filter(Boolean).join(' · ');const detail=cardDetail||'A small Soul. A story unfolding.';let detailSize=16;while(detailSize>11&&ctx.measureText(detail).width>785){detailSize--;}ctx.font=detailSize+'px system-ui, sans-serif';ctx.fillText(detail,450,1005);
   ctx.font='18px Georgia, serif';ctx.fillStyle='#e6c7ef';ctx.fillText('Small Soul. Big Journey. Brighter World.',450,1060);
   ctx.font='14px system-ui, sans-serif';ctx.fillStyle='#baa8c8';shareUrlLines(summary.url).forEach((line,i)=>ctx.fillText(line,450,1105+22*i));
   ctx.font='11px system-ui, sans-serif';ctx.fillStyle='#9989a7';ctx.fillText('LOCAL GAME SCORE · PUBLIC PROTOTYPE · NO CLOUD SAVE',450,1153);

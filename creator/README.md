@@ -1,4 +1,4 @@
-# SoulCraft — Creator v0.4.1 (Earth Shield System Preview)
+# SoulCraft — Creator v0.4.2 (Guardian Cockpit Prototype)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
@@ -75,3 +75,11 @@ User-provided screenshots show StoneR (Earth origin, 80 Creator XP, Crystal Guar
 ## Acceptance and next scope
 
 See [Android shield acceptance](SHIELD-ACCEPTANCE-v0.4.1.md) for checked versus unverified observations, and [Guardian cockpit milestone](GUARDIAN-COCKPIT-SCOPE.md) for the proposed five armor silhouettes (not implemented).
+
+## Guardian Cockpit — v0.4.2
+
+At 80 XP, an Earth Soul can **preview** any of five SVG Guardian shell silhouettes: Balanced, Heavy Bastion, Tall Sentinel, Compact Striker and Broad Titan. Preview does not persist until **Equip previewed armor** is pressed. The player can change or remove armor freely without XP costs. The existing single Earth Soul is shown smaller inside the chest/neck/head cockpit; the unmodified classic Crystal Guardian remains the default until armor is selected.
+
+Armor Path is an optional `armorPath` field. It is allowed only for an awakened 80-XP Earth Soul; preexisting v1 JSON backups remain supported. Shield, cosmetic craft, name, private goals and local XP are preserved. New share PNG cards depict the equipped shell, the existing one Soul in its cockpit and a separately chosen shield. No armor path adds combat powers or a second Soul.
+
+**Visual scope:** five simple, programmatically authored vector shell silhouettes for implementation testing. They are not the finished illustrated concept-poster assets; Android aesthetic and layout acceptance remain open. The user can choose again; no irreversible path locks have been introduced.

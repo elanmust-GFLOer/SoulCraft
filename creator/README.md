@@ -1,4 +1,4 @@
-# SoulCraft — Creator v0.3.4 (PWA)
+# SoulCraft — Creator v0.4.0 (Earth Evolution Preview)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
@@ -29,7 +29,7 @@ Then open `http://localhost:8000`. Static files use browser ES modules; no build
 
 This is a prototype, not a secure activity or XP ledger. Goal completion is self-reported; local data and the device clock can be edited. There is no backend, cloud/email sync, external AI, verified activity proof, GFLO rewards or Expo implementation. A share link is not a backup or account access link. Localhost, GitHub Pages and the separate hosted Site have independent browser storage; use Save/Restore to transfer progress.
 
-The 0/40/80 XP glow and sparkle states are **not** complete, recognizably distinct character evolutions. Earlier Genesis and simulated 3-of-5 fusion are archived under [prototypes](../prototypes/); fusion is **not** part of Creator v0.3.3. Elemental design notes in [docs](../docs/ELEMENTAL-TRAITS-v0.1.md) describe proposed visuals, not validated psychological traits.
+The 0/40/80 XP glow and sparkle states are **not** complete, recognizably distinct character evolutions. Earlier Genesis and simulated 3-of-5 fusion are archived under [prototypes](../prototypes/); fusion is **not** part of Creator v0.4.0. Elemental design notes in [docs](../docs/ELEMENTAL-TRAITS-v0.1.md) describe proposed visuals, not validated psychological traits.
 
 ## Home-screen installation (v0.3.4)
 
@@ -43,11 +43,18 @@ Share cards and Copy SoulCraft link now use the public GitHub Pages root `https:
 - The user reports successfully installing SoulCraft on their phone home screen and launching/using it (Android). This is a user-reported functional acceptance, not independent device-browser verification.
 - Preservation of the exact prior Soul state *inside the installed context* and re-exported share-card URL have not been separately confirmed. The existing Save/Restore workflow remains the documented transfer and recovery method.
 
+## Earth evolution — v0.4.0
+
+Earth alone now has three silhouette states inferred from existing earned XP: base Earth at 0 XP, Stone Guardian (mossstone armor) at 40 XP, and Crystal Guardian (crystal crown and projecting wings) at 80 XP. Two transparent SVG artwork layers supplement the original Earth character. These are a first morphology prototype, not final production illustrations or a new storage schema. Existing StoneR-style backups keep the same name, daily goal events, craft and XP. All four other elements still use the previous visual stages. The new Earth morphology is also rendered in newly generated PNG share cards; old exported PNGs never update.
+
+The share-card GitHub Pages URL drawing also no longer depends on the former test Site domain. Visual Android acceptance is pending. Run `node --test model.test.mjs portability.test.mjs pwa.test.mjs evolution.test.mjs`.
+
 ## Release history
 
 - v0.3.1 — optional naming and renaming.
 - v0.3.2 — three reversible cosmetic craft effects.
 - v0.3.3 — JSON backup/validated restore and privacy-scoped PNG sharing.
 - v0.3.4 — GitHub Pages PWA manifest, installation guidance, and public share URL.
+- v0.4.0 — Earth three-stage morphology and share-card URL correction.
 
 See the [project README](../README.md), [Creator roadmap](ROADMAP.md), and [overall roadmap](../docs/ROADMAP.md). Artwork and animation sheets remain provisional.

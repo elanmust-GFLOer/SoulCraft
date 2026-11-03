@@ -8,9 +8,14 @@ Updated 2026-11-02. Implemented prototype behavior and future gates are separate
 - Creator v0.3–v0.3.3 in `creator/`: daily local goal/XP, persistence, naming, cosmetic craft, JSON backup/validated restore and local PNG sharing.
 - The root Pages entrypoint redirects to Creator v0.3.3 at `creator/dist/`; earlier v0.2 demos remain archived in `prototypes/`.
 
+## v0.4.0 Earth preview (implemented, manual acceptance pending)
+
+- The first Earth morphologies derive from existing 0/40/80 XP; transparent armor/crystal silhouette assets augment the original art and appear in new PNG cards.
+- Android/PWA visual distinctiveness, file loading, craft combination and save/restore still need a real-device acceptance pass. The remaining four origins have not been upgraded, and three-of-five fusion remains unimplemented.
+
 ## Next gate
 
-Implement a distinct three-form evolution for one origin, linked to existing 0/40/80 XP milestones, preserving saved names/goals/craft and share privacy. Verify actual UI selection and asset loading as well as model boundaries before publishing.
+Validate the new three-form Earth evolution on Android/PWA with an existing 80-XP Soul and a fresh or restored low-XP Earth Soul. Check shape recognition, new share PNG, names/craft/goal privacy. Expand only after acceptance.
 
 ## Subsequent proposals
 

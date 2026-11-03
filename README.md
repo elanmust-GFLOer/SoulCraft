@@ -4,7 +4,7 @@ One Soul. Three lenses. Five elemental origins.
 
 SoulCraft is an early browser-local prototype. One Evolve Soul develops through Creator (action), with Companion (relationship) and Spark (reflection) planned as later limited previews. Essence Soul is the humanoid frontend guide.
 
-## Current implementation — Creator v0.4.0 (Earth Evolution Preview)
+## Current implementation — Creator v0.4.1 (Earth Shield Preview)
 
 Complete Creator source (v0.3.3 core features, v0.3.4 PWA, and Earth-only v0.4.0 morphology) is in [`creator/`](creator/README.md): five origins, awakening, optional naming, one self-reported daily goal worth 40 local XP, three reversible cosmetic effects, JSON backup/validated restore, and a private-goal-free PNG share card. Progress is stored in the browser. No dependency installation or build is needed.
 

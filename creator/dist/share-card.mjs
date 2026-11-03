@@ -1,4 +1,4 @@
-import {ELEMENTS} from './model.mjs';
+import {ELEMENTS,SHIELDS} from './model.mjs';
 export function shareUrlLines(raw){const url=new URL(raw),text=url.host+url.pathname;if(text.length<=41)return [url.protocol+'//'+text];const k=Math.max(text.lastIndexOf('/',38),text.lastIndexOf('.',38)),at=k>8?k+1:Math.ceil(text.length/2);return [url.protocol+'//'+text.slice(0,at),text.slice(at)];}
 export async function drawShareCard(canvas,summary){
   canvas.width=900;canvas.height=1200;
@@ -16,11 +16,15 @@ export async function drawShareCard(canvas,summary){
   if(summary.craft==='Starlight'){ctx.fillStyle=color;ctx.font='40px Georgia, serif';for(const [x,y] of [[165,360],[730,430],[230,650],[675,260]])ctx.fillText('✧',x,y);}
   ctx.drawImage(image,450-w/2,470-h/2,w,h);
   if(summary.origin==='earth'&&summary.xp>=40){const layers=['assets/earth-mantle.svg',...(summary.xp>=80?['assets/earth-crown.svg']:[])];for(const path of layers){const layer=new Image();layer.src=path;await layer.decode();ctx.drawImage(layer,450-w/2,470-h/2,w,h);}}
+  // Shields are public cosmetic choices. Draw only known artwork above the guardian.
+  if(summary.origin==='earth'&&summary.xp>=80&&Object.hasOwn(SHIELDS,summary.shield)){
+    const overlay=new Image();overlay.src='assets/shields/'+summary.shield+'.svg';await overlay.decode();ctx.drawImage(overlay,450-w/2,470-h/2,w,h);
+  }
 
   let fontSize=58;do{ctx.font=`${fontSize}px Georgia, serif`;if(ctx.measureText(summary.name).width<=770)break;fontSize-=2;}while(fontSize>22);
   ctx.fillStyle='#fff2fc';ctx.fillText(summary.name,450,825);ctx.fillStyle=color;ctx.font='22px system-ui, sans-serif';ctx.fillText(summary.element.toUpperCase()+' SOUL',450,870);
   ctx.strokeStyle=color+'66';ctx.beginPath();ctx.moveTo(240,908);ctx.lineTo(660,908);ctx.stroke();ctx.font='40px Georgia, serif';ctx.fillStyle='#f6e5ff';ctx.fillText(summary.xp+' CREATOR XP',450,966);
-  ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#bca7c8';ctx.fillText(summary.craft||'A small Soul. A story unfolding.',450,1005);
+  ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#bca7c8';const cardDetail=[summary.craft,summary.shield&&Object.hasOwn(SHIELDS,summary.shield)?SHIELDS[summary.shield].name:null].filter(Boolean).join(' · ');ctx.fillText(cardDetail||'A small Soul. A story unfolding.',450,1005);
   ctx.font='18px Georgia, serif';ctx.fillStyle='#e6c7ef';ctx.fillText('Small Soul. Big Journey. Brighter World.',450,1060);
   ctx.font='14px system-ui, sans-serif';ctx.fillStyle='#baa8c8';shareUrlLines(summary.url).forEach((line,i)=>ctx.fillText(line,450,1105+22*i));
   ctx.font='11px system-ui, sans-serif';ctx.fillStyle='#9989a7';ctx.fillText('LOCAL GAME SCORE · PUBLIC PROTOTYPE · NO CLOUD SAVE',450,1153);

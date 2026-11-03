@@ -1,4 +1,4 @@
-# SoulCraft — Creator v0.4.0 (Earth Evolution Preview)
+# SoulCraft — Creator v0.4.1 (Earth Shield System Preview)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
@@ -56,5 +56,14 @@ The share-card GitHub Pages URL drawing also no longer depends on the former tes
 - v0.3.3 — JSON backup/validated restore and privacy-scoped PNG sharing.
 - v0.3.4 — GitHub Pages PWA manifest, installation guidance, and public share URL.
 - v0.4.0 — Earth three-stage morphology and share-card URL correction.
+- v0.4.1 — five selectable Earth shields, optional deterministic Companion suggestion, restored shield persistence and new PNG card overlays.
 
 See the [project README](../README.md), [Creator roadmap](ROADMAP.md), and [overall roadmap](../docs/ROADMAP.md). Artwork and animation sheets remain provisional.
+
+## Earth Shield System — v0.4.1 (code and acceptance)
+
+At 80 earned local Creator XP the Earth Crystal Guardian can choose any of five cosmetic shields: Bulwark, Reflective, Bloom, Core or Halo. One shield may be equipped at a time, freely swapped or removed, without XP cost. The selected ID survives browser reloads and Save/Restore; historical backups with no shield remain compatible. A new public Share my Soul PNG includes only the equipped shield artwork and label, never private goals or mood choices.
+
+The Companion section is a non-AI, optional **preview**: clicking a present need gives a deterministic recommendation that the player may accept or ignore. No feelings or mood labels are stored or transmitted; only an explicitly equipped shield is persisted. Shield features have no combat statistics or validated mental-health effects.
+
+Automated checks cover all five selections, switching, locking, legacy restores, invalid input and the privacy allowlist. Final mobile and PNG visual acceptance must be performed in the installed Android PWA. The five shield SVGs are provisional static game visuals, not completed polished shield art.

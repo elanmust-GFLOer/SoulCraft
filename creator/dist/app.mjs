@@ -1,4 +1,4 @@
-import {ELEMENTS,CRAFTS,emptyState,localDay,restore,xpOf,completedToday,saveGoal,completeGoal,normalizeName,renameSoul,craftUnlocked,equipCraft} from './model.mjs';
+import {ELEMENTS,CRAFTS,emptyState,localDay,restore,xpOf,completedToday,saveGoal,completeGoal,normalizeName,renameSoul,craftUnlocked,equipCraft,earthEvolution} from './model.mjs';
 import {createBackup,parseBackup,shareSummary,SOULCRAFT_URL,MAX_BACKUP_BYTES} from './portability.mjs';
 import {drawShareCard} from './share-card.mjs';
 const KEY='soulcraft.creator.v03';
@@ -25,7 +25,10 @@ function render(){
  $('name-help').textContent='Optional · Up to 24 characters. Leave empty to use '+el.word+'.';
  document.title='SoulCraft — '+displayName;
  $('bubble').hidden=state.born;$('character').hidden=!state.born;
- $('character').src=`assets/${state.origin}.png`;$('character').alt=displayName+', your '+el.name+' Evolve Soul';
+ $('character').src=`assets/${state.origin}.png`;
+ const earthForm=earthEvolution(state);$('scene').dataset.earthForm=String(earthForm);
+ $('earth-mantle').hidden=earthForm<2;$('earth-crown').hidden=earthForm<3;
+ $('character').alt=displayName+', your '+(earthForm===3?'Crystal Guardian':earthForm===2?'Stone Guardian':el.name)+' Evolve Soul';
  $('scene').classList.toggle('flourishing',xp>=40);$('scene').classList.toggle('radiant',xp>=80);$('growth-spark').hidden=xp<40;
  $('scene').dataset.craft=state.craft||'none';
  $('craft-card').hidden=!state.born;
@@ -35,8 +38,8 @@ function render(){
  $('craft-options').replaceChildren(...Object.entries(CRAFTS).map(([id,c])=>{const b=document.createElement('button');b.type='button';b.className='craft-option';b.id='craft-'+id;b.disabled=!unlocked;b.setAttribute('aria-pressed',String(state.craft===id));b.setAttribute('aria-label',c.name);const icon=document.createElement('span'),name=document.createElement('strong'),desc=document.createElement('small');icon.className='craft-icon';icon.setAttribute('aria-hidden','true');icon.textContent=c.icon;name.textContent=c.name;desc.textContent=c.description;b.append(icon,name,desc);b.onclick=()=>{state=equipCraft(state,id);persist();render();$('craft-'+id).focus();};return b;}));
  $('craft-status').textContent=state.craft?CRAFTS[state.craft].name+' equipped. Saved with your Soul. Cosmetic only — no extra XP.':unlocked?'No effect equipped. Cosmetic only — no extra XP.':'Your first craft is waiting to unfold.';
  $('remove-craft').hidden=!state.craft;
- $('scene-caption').textContent=!state.born?'A spark of possibility.':xp>=80?'The light of your actions stays with you.':xp>=40?'Your first small action left a little light.':'Awake at last. Your journey begins.';
- $('stage-badge').textContent=xp>=80?'03 · RADIANCE':xp>=40?'02 · GROWING':'01 · AWAKENING';
+ $('scene-caption').textContent=!state.born?'A spark of possibility.':earthForm===3?'Crystal Guardian · rooted in your journey.':earthForm===2?'Stone Guardian · your first armor has grown.':xp>=80?'The light of your actions stays with you.':xp>=40?'Your first small action left a little light.':'Awake at last. Your journey begins.';
+ $('stage-badge').textContent=earthForm===3?'03 · CRYSTAL GUARDIAN':earthForm===2?'02 · STONE GUARDIAN':xp>=80?'03 · RADIANCE':xp>=40?'02 · GROWING':'01 · AWAKENING';
  $('xp').textContent=xp;$('progress-fill').style.width=Math.min(100,xp/80*100)+'%';$('progress').setAttribute('aria-valuenow',Math.min(80,xp));
  $('next-stage').textContent=xp>=80?'All three visual stages reached':`Next stage: ${xp<40?40:80} XP`;
  for(let i=1;i<=3;i++)$('step-'+i).classList.toggle('current',i===1||i===2&&xp>=40||i===3&&xp>=80);

@@ -10,3 +10,6 @@
 
 /* v0.3.4: home-screen installation control */
 .install-card{margin-top:23px;padding:25px;border:1px solid #d3ace92b;border-radius:22px;background:linear-gradient(120deg,#241c32,#1b1828);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.install-card>div{flex:1;min-width:205px}.install-card h2{font:26px Georgia,serif;margin:9px 0 12px}.install-card .muted{margin:0}.install-button{min-height:46px;padding:12px 18px;flex:0 0 auto}.install-help{flex-basis:100%;font-size:12px;line-height:1.6;color:#d9c6e9;margin:0}#install-soulcraft:focus-visible{outline:3px solid var(--accent);outline-offset:4px}@media(max-width:760px){.install-card{padding:22px 19px}.install-button{width:100%}}
+
+/* v0.4 Earth-only visible growth: morphology layers rather than glow alone. */
+.earth-evolution{position:absolute;z-index:3;width:295px;height:310px;object-fit:contain;pointer-events:none;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 5px 10px #0008)}.earth-crown{z-index:4;filter:drop-shadow(0 0 13px #bedd8b88)}@media(max-width:760px){.earth-evolution{height:276px;width:270px}}body.no-motion .earth-evolution{animation:none}@media(prefers-reduced-motion:reduce){.earth-evolution{animation:none!important}}

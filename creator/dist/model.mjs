@@ -54,3 +54,6 @@ export function completeGoal(state,day) {
   if(!state.born || completedToday(state,day) || !state.goal || state.goal.day!==day) return state;
   return {...state,events:[...state.events,{day,goal:state.goal.text,xp:40}],goal:null};
 }
+
+// Derived presentation only: no save schema or XP rule changes.
+export function earthEvolution(state){if(!state?.born||state.origin!=='earth')return 0;const xp=xpOf(state);return xp>=80?3:xp>=40?2:1;}

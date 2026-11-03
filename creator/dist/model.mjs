@@ -10,8 +10,24 @@ export const CRAFTS = {
   starlight:{name:'Starlight',icon:'✧',description:'A small constellation around your Soul.'},
   orbit:{name:'Light Ribbon',icon:'◎',description:'A flowing ring of elemental light.'}
 };
-export const emptyState = () => ({version:1, origin:'fire', name:'', craft:null, born:false, events:[], goal:null, motion:true});
+export const SHIELDS = {
+  bulwark:{name:"Bulwark Shield",motto:"Hold your ground",description:"When you want steadiness under pressure.",icon:"🛡️"},
+  reflective:{name:"Reflective Shield",motto:"See, don't absorb",description:"When you want perspective or clearer boundaries.",icon:"💎"},
+  bloom:{name:"Bloom Shield",motto:"Care is protection",description:"When you need gentleness and restoration.",icon:"🌱"},
+  core:{name:"Core Shield",motto:"Steady from within",description:"When you want focus and structure.",icon:"✦"},
+  halo:{name:"Halo Shield",motto:"A gentle boundary",description:"When you want calm and spaciousness.",icon:"◉"},
+};
+export const SHIELD_MOODS = {
+  steady:'bulwark', perspective:'reflective', care:'bloom', focus:'core', calm:'halo'
+};
+export const emptyState = () => ({version:1, origin:'fire', name:'', craft:null, shield:null, born:false, events:[], goal:null, motion:true});
 export const craftUnlocked = state => state.born && state.events.length>0;
+export const shieldUnlocked = state => state?.born===true && state.origin==='earth' && xpOf(state)>=80;
+export function equipShield(state,id){
+  if(!shieldUnlocked(state) || (id!==null && !Object.hasOwn(SHIELDS,id)))return state;
+  return {...state,shield:id};
+}
+export const suggestedShield = mood => Object.hasOwn(SHIELD_MOODS,mood)?SHIELD_MOODS[mood]:null;
 export function equipCraft(state,id) {
   if(!craftUnlocked(state) || (id!==null && !Object.hasOwn(CRAFTS,id))) return state;
   return {...state,craft:id};
@@ -40,7 +56,8 @@ export function restore(raw) {
     const goal=v.goal && validDay(v.goal.day) && typeof v.goal.text==='string' && v.goal.text.trim() ? {day:v.goal.day,text:v.goal.text.trim().slice(0,160)} : null;
     const born=v.born===true;
     const craft=born && events.length>0 && Object.hasOwn(CRAFTS,v.craft) ? v.craft : null;
-    return {version:1,origin:v.origin,name:normalizeName(v.name)??'',craft,born,events,goal,motion:v.motion!==false};
+    const shield=born && v.origin==='earth' && events.length>=2 && Object.hasOwn(SHIELDS,v.shield)?v.shield:null;
+    return {version:1,origin:v.origin,name:normalizeName(v.name)??'',craft,shield,born,events,goal,motion:v.motion!==false};
   } catch { return emptyState(); }
 }
 export const xpOf = state => state.events.length*40;

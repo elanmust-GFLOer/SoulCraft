@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 330"><defs>
+ <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d3dcb8"/><stop offset=".5" stop-color="#6a7e69"/><stop offset="1" stop-color="#354a4a"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8faff" stop-opacity=".9"/><stop offset=".5" stop-color="#8bcbc6" stop-opacity=".7"/><stop offset="1" stop-color="#344779" stop-opacity=".9"/></linearGradient>
+ <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9ffc9"/><stop offset=".6" stop-color="#b5eda0"/><stop offset="1" stop-color="#5ca59a"/></linearGradient>
+ </defs><g transform="translate(218 166) scale(.92)"><path d="M40 14L71 33 70 81 40 108 10 81 9 33Z" fill="url(#stone)" stroke="#d9ebbd" stroke-width="4"/><path d="M40 32C16 10 7 43 37 59 14 71 33 97 43 70 64 95 78 63 48 58 75 40 61 15 40 32Z" fill="#b9e58a" stroke="#fff5c7" stroke-width="3"/><circle cx="42" cy="55" r="11" fill="#fff8dc"/><path d="M10 89Q-3 67 5 46Q15 67 27 73M70 91Q87 67 78 43Q62 64 52 78" fill="#71b879" stroke="#c9f7b1" stroke-width="2"/></g></svg>

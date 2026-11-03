@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 330"><defs>
+ <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d3dcb8"/><stop offset=".5" stop-color="#6a7e69"/><stop offset="1" stop-color="#354a4a"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8faff" stop-opacity=".9"/><stop offset=".5" stop-color="#8bcbc6" stop-opacity=".7"/><stop offset="1" stop-color="#344779" stop-opacity=".9"/></linearGradient>
+ <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9ffc9"/><stop offset=".6" stop-color="#b5eda0"/><stop offset="1" stop-color="#5ca59a"/></linearGradient>
+ </defs><g transform="translate(218 166) scale(.92)"><circle cx="40" cy="56" r="43" fill="url(#stone)" stroke="#e8e2b9" stroke-width="6"/><circle cx="40" cy="56" r="29" fill="#222b35" stroke="#9ade84" stroke-width="3"/><path d="M40 17 59 54 40 95 21 54Z" fill="url(#glow)" stroke="#f2ffbe" stroke-width="3"/><path d="M40 8v100M-8 56h96" stroke="#b9efa0" stroke-width="2" opacity=".65"/></g></svg>

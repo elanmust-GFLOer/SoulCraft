@@ -1,4 +1,4 @@
-import {ELEMENTS,CRAFTS,emptyState,localDay,restore,xpOf,completedToday,saveGoal,completeGoal,normalizeName,renameSoul,craftUnlocked,equipCraft,earthEvolution} from './model.mjs';
+import {ELEMENTS,CRAFTS,emptyState,localDay,restore,xpOf,completedToday,saveGoal,completeGoal,normalizeName,renameSoul,craftUnlocked,equipCraft,earthEvolution,SHIELDS,shieldUnlocked,equipShield,suggestedShield} from './model.mjs';
 import {createBackup,parseBackup,shareSummary,SOULCRAFT_URL,MAX_BACKUP_BYTES} from './portability.mjs';
 import {drawShareCard} from './share-card.mjs';
 const KEY='soulcraft.creator.v03';
@@ -6,6 +6,7 @@ const $=id=>document.getElementById(id);
 let canSave=true;
 let raw=null;try{raw=localStorage.getItem(KEY);}catch{canSave=false;}
 let state=restore(raw), editing=false;
+let chosenMood=null; // optional transient suggestion, never persisted
 let lastDay=localDay();
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));canSave=true;}catch{canSave=false;}$('save-status').textContent=canSave?'◈ Saved in this browser':'⚠ Saving is unavailable — progress lasts only while this page is open';}
 function notice(text){$('notice').textContent=text;$('notice').hidden=!text;}
@@ -28,6 +29,8 @@ function render(){
  $('character').src=`assets/${state.origin}.png`;
  const earthForm=earthEvolution(state);$('scene').dataset.earthForm=String(earthForm);
  $('earth-mantle').hidden=earthForm<2;$('earth-crown').hidden=earthForm<3;
+ $('shield-visual').hidden=!(earthForm===3 && state.shield);
+ if(earthForm===3&&state.shield)$('shield-visual').src=`assets/shields/${state.shield}.svg`;
  $('character').alt=displayName+', your '+(earthForm===3?'Crystal Guardian':earthForm===2?'Stone Guardian':el.name)+' Evolve Soul';
  $('scene').classList.toggle('flourishing',xp>=40);$('scene').classList.toggle('radiant',xp>=80);$('growth-spark').hidden=xp<40;
  $('scene').dataset.craft=state.craft||'none';
@@ -38,6 +41,25 @@ function render(){
  $('craft-options').replaceChildren(...Object.entries(CRAFTS).map(([id,c])=>{const b=document.createElement('button');b.type='button';b.className='craft-option';b.id='craft-'+id;b.disabled=!unlocked;b.setAttribute('aria-pressed',String(state.craft===id));b.setAttribute('aria-label',c.name);const icon=document.createElement('span'),name=document.createElement('strong'),desc=document.createElement('small');icon.className='craft-icon';icon.setAttribute('aria-hidden','true');icon.textContent=c.icon;name.textContent=c.name;desc.textContent=c.description;b.append(icon,name,desc);b.onclick=()=>{state=equipCraft(state,id);persist();render();$('craft-'+id).focus();};return b;}));
  $('craft-status').textContent=state.craft?CRAFTS[state.craft].name+' equipped. Saved with your Soul. Cosmetic only — no extra XP.':unlocked?'No effect equipped. Cosmetic only — no extra XP.':'Your first craft is waiting to unfold.';
  $('remove-craft').hidden=!state.craft;
+ const shieldsReady=shieldUnlocked(state);
+ $('shield-card').hidden=!shieldsReady;
+ if(shieldsReady){
+  $('shield-options').replaceChildren(...Object.entries(SHIELDS).map(([id,spec])=>{
+   const b=document.createElement('button');b.type='button';b.className='shield-option';b.id='shield-'+id;
+   b.setAttribute('aria-pressed',String(state.shield===id));
+   b.setAttribute('aria-label',spec.name);
+   const icon=document.createElement('span');icon.className='shield-icon';icon.setAttribute('aria-hidden','true');icon.textContent=spec.icon;
+   const t=document.createElement('span'),name=document.createElement('strong'),desc=document.createElement('small');name.textContent=spec.name;desc.textContent=spec.motto;t.append(name,desc);b.append(icon,t);
+   b.onclick=()=>{state=equipShield(state,id);persist();render();$('shield-'+id).focus();};
+   return b;
+  }));
+  $('shield-status').textContent=state.shield?SHIELDS[state.shield].name+' equipped. Free to change · 0 XP spent.':'No shield equipped. Pick a form to try it.';
+  $('remove-shield').hidden=!state.shield;
+  const recommendation=suggestedShield(chosenMood);
+  $('shield-accept').hidden=!recommendation;
+  $('shield-suggestion').textContent=recommendation?'Companion preview suggests '+SHIELDS[recommendation].name+': '+SHIELDS[recommendation].description+' You can ignore this.':'Pick a need to explore a shield. You always decide what to equip.';
+  document.querySelectorAll('[data-mood]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mood===chosenMood)));
+ }
  $('scene-caption').textContent=!state.born?'A spark of possibility.':earthForm===3?'Crystal Guardian · rooted in your journey.':earthForm===2?'Stone Guardian · your first armor has grown.':xp>=80?'The light of your actions stays with you.':xp>=40?'Your first small action left a little light.':'Awake at last. Your journey begins.';
  $('stage-badge').textContent=earthForm===3?'03 · CRYSTAL GUARDIAN':earthForm===2?'02 · STONE GUARDIAN':xp>=80?'03 · RADIANCE':xp>=40?'02 · GROWING':'01 · AWAKENING';
  $('xp').textContent=xp;$('progress-fill').style.width=Math.min(100,xp/80*100)+'%';$('progress').setAttribute('aria-valuenow',Math.min(80,xp));
@@ -70,9 +92,14 @@ $('edit-goal').onclick=()=>{editing=true;$('goal-input').value=state.goal.text;r
 $('complete').onclick=()=>{const before=xpOf(state);state=completeGoal(state,localDay());persist();render();notice(xpOf(state)>before?'✦ +40 XP · Your step for today is saved.':'You have already received today’s reward.');};
 $('motion').onclick=()=>{state={...state,motion:!state.motion};persist();render();};
 $('remove-craft').onclick=()=>{state=equipCraft(state,null);persist();render();$('craft-halo').focus();};
+$('remove-shield').onclick=()=>{state=equipShield(state,null);persist();render();$('shield-bulwark').focus();};
+document.querySelectorAll('[data-mood]').forEach(button=>button.onclick=()=>{
+ chosenMood=button.dataset.mood;render();button.focus();
+});
+$('shield-accept').onclick=()=>{const id=suggestedShield(chosenMood);if(!id)return;state=equipShield(state,id);persist();render();$('shield-'+id).focus();};
 $('reset').onclick=()=>$('reset-dialog').showModal();$('cancel-reset').onclick=()=>$('reset-dialog').close();
-$('confirm-reset').onclick=()=>{state=emptyState();editing=false;$('name-input').value='';$('goal-input').value='';$('goal-input').dispatchEvent(new Event('input'));persist();$('reset-dialog').close();notice('');render();};
-window.addEventListener('storage',event=>{if(event.key===KEY){state=restore(event.newValue);editing=false;render();}});
+$('confirm-reset').onclick=()=>{state=emptyState();editing=false;chosenMood=null;$('name-input').value='';$('goal-input').value='';$('goal-input').dispatchEvent(new Event('input'));persist();$('reset-dialog').close();notice('');render();};
+window.addEventListener('storage',event=>{if(event.key===KEY){state=restore(event.newValue);editing=false;chosenMood=null;render();}});
 function rollover(){const day=localDay();if(day!==lastDay){lastDay=day;editing=false;notice('');render();}}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)rollover();});setInterval(rollover,30000);
 
@@ -91,7 +118,7 @@ $('restore-file').onchange=async()=>{
    const parsed=parseBackup(await file.text());pendingRestore=parsed.state;
    const summary=shareSummary(parsed.state);
    $('restore-summary').replaceChildren();
-   for(const [label,value] of [['Soul',summary.name],['Origin',summary.element+' Soul'],['Progress',summary.xp+' XP · '+parsed.state.events.length+(parsed.state.events.length===1?' completed goal':' completed goals')],['Effect',summary.craft||'None'],['Active goal',parsed.state.goal?'Included (private)':'None'],['Backup created',new Date(parsed.exportedAt).toLocaleString('en-GB')]]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;$('restore-summary').append(dt,dd);}
+   for(const [label,value] of [['Soul',summary.name],['Origin',summary.element+' Soul'],['Progress',summary.xp+' XP · '+parsed.state.events.length+(parsed.state.events.length===1?' completed goal':' completed goals')],['Effect',summary.craft||'None'],['Shield',summary.shield?SHIELDS[summary.shield].name:'None'],['Active goal',parsed.state.goal?'Included (private)':'None'],['Backup created',new Date(parsed.exportedAt).toLocaleString('en-GB')]]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;$('restore-summary').append(dt,dd);}
    $('restore-dialog').showModal();
  }catch(error){pendingRestore=null;$('restore-error').textContent=error.message||'This backup could not be read. Your Soul has not changed.';}
  finally{$('restore-soul').disabled=false;$('restore-file').value='';}
@@ -101,12 +128,12 @@ $('restore-dialog').addEventListener('close',()=>{pendingRestore=null;});
 $('confirm-restore').onclick=()=>{
  if(!pendingRestore)return;
  try{localStorage.setItem(KEY,JSON.stringify(pendingRestore));}catch{$('restore-error').textContent='Restore cancelled: this browser could not save the backup. Your current Soul has not changed.';pendingRestore=null;$('restore-dialog').close();return;}
- state=pendingRestore;canSave=true;editing=false;$('goal-input').value=state.goal?.text||'';$('goal-input').dispatchEvent(new Event('input'));$('name-input').value='';$('restore-dialog').close();render();notice('Your Soul has been restored in this browser.');
+ state=pendingRestore;canSave=true;editing=false;chosenMood=null;$('goal-input').value=state.goal?.text||'';$('goal-input').dispatchEvent(new Event('input'));$('name-input').value='';$('restore-dialog').close();render();notice('Your Soul has been restored in this browser.');
 };
 let cardBlob=null,cardOrigin='fire',cardRequest=0;
 $('share-soul').onclick=async()=>{
  const request=++cardRequest;cardBlob=null;$('download-card').disabled=true;$('native-share').hidden=true;$('card-status').textContent='Creating your card…';$('share-dialog').showModal();
- try{const summary=shareSummary(state),blob=await drawShareCard($('share-canvas'),summary);if(request!==cardRequest)return;cardBlob=blob;cardOrigin=summary.origin;$('share-canvas').setAttribute('aria-label',`${summary.name} · ${summary.element} Soul · ${summary.xp} Creator XP`);$('download-card').disabled=false;const file=new File([blob],'soulcraft-card.png',{type:'image/png'});$('native-share').hidden=!(navigator.share&&navigator.canShare?.({files:[file]}));$('card-status').textContent='Your card includes your name, element, XP, effect, and the standard SoulCraft link. Your goals stay private.';}catch{$('card-status').textContent='The card could not be created. You can still copy the SoulCraft link.';}
+ try{const summary=shareSummary(state),blob=await drawShareCard($('share-canvas'),summary);if(request!==cardRequest)return;cardBlob=blob;cardOrigin=summary.origin;$('share-canvas').setAttribute('aria-label',`${summary.name} · ${summary.element} Soul · ${summary.xp} Creator XP`);$('download-card').disabled=false;const file=new File([blob],'soulcraft-card.png',{type:'image/png'});$('native-share').hidden=!(navigator.share&&navigator.canShare?.({files:[file]}));$('card-status').textContent='Your card includes your name, element, XP, effect, shield, and the public SoulCraft link. Your goals stay private.';}catch{$('card-status').textContent='The card could not be created. You can still copy the SoulCraft link.';}
 };
 $('close-share').onclick=()=>$('share-dialog').close();
 $('share-dialog').addEventListener('close',()=>{++cardRequest;cardBlob=null;});

@@ -37,6 +37,12 @@ The public GitHub Pages Creator now includes a web-app manifest, square PNG icon
 
 Share cards and Copy SoulCraft link now use the public GitHub Pages root `https://elanmust-gfloer.github.io/SoulCraft/`. Existing downloaded PNG cards retain the old printed URL. The user must re-export a card for the new URL. This is a public web prototype, not a native Android application.
 
+## Acceptance evidence (2026-11-03)
+
+- GitHub Actions Creator/PWA checks and Pages deployment succeeded for v0.3.4.
+- The user reports successfully installing SoulCraft on their phone home screen and launching/using it (Android). This is a user-reported functional acceptance, not independent device-browser verification.
+- Preservation of the exact prior Soul state *inside the installed context* and re-exported share-card URL have not been separately confirmed. The existing Save/Restore workflow remains the documented transfer and recovery method.
+
 ## Release history
 
 - v0.3.1 — optional naming and renaming.

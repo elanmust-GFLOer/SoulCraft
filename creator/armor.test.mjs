@@ -7,14 +7,14 @@ import {shareSummary} from './dist/portability.mjs';
 
 const load=p=>readFileSync(new URL('./dist/'+p,import.meta.url),'utf8');
 async function render(state){
- const old=globalThis.Image,images=[],text=[];
+ const old=globalThis.Image,images=[],text=[],draws=[];
  globalThis.Image=class{naturalWidth=320;naturalHeight=330;set src(s){images.push(s)}async decode(){}};
  const grad=()=>({addColorStop(){}}), ctx={createLinearGradient:grad,createRadialGradient:grad,
  fillRect(){},beginPath(){},arc(){},fill(){},strokeRect(){},save(){},restore(){},
- translate(){},rotate(){},ellipse(){},stroke(){},moveTo(){},lineTo(){},drawImage(){},
- fillText(x){text.push(String(x))},measureText(x){return {width:String(x).length*13}}};
+ translate(){},rotate(){},ellipse(){},stroke(){},moveTo(){},lineTo(){},
+ drawImage(...args){draws.push(args)},fillText(x){text.push(String(x))},measureText(x){return {width:String(x).length*13}}};
  const canvas={getContext:()=>ctx,toBlob:done=>done({type:'image/png'})};
- try{await drawShareCard(canvas,shareSummary(state));return{images,text}}finally{globalThis.Image=old}
+ try{await drawShareCard(canvas,shareSummary(state));return{images,text,draws}}finally{globalThis.Image=old}
 }
 const earth={...emptyState(),origin:'earth',born:true,name:'StoneR',shield:'reflective',craft:'halo',
  events:[{day:'2026-11-01',goal:'PRIVATE GOAL A',xp:40},{day:'2026-11-02',goal:'PRIVATE GOAL B',xp:40}]};
@@ -50,7 +50,7 @@ test('preview only becomes persisted after explicit equip; UI is not a new Soul'
 
 test('v0.4.3 cockpit has larger readable Soul and all five signature sculpted plate sets',()=>{
  const css=load('style.css'),html=load('index.html'),app=load('app.mjs');
- assert.match(html,/CREATOR · v0\.4\.3/);
+ assert.match(html,/CREATOR · v0\.4\.4/);
  assert.match(css,/\.guardian-cockpit img\{\s*width:122px;height:128px/);
  assert.match(css,/\.scene\[data-armor-active="true"\] \.shield-visual/);
  assert.match(app,/dataset\.armorActive=String\(!!activeArmor\)/);
@@ -74,4 +74,19 @@ test('v0.4.4 presentation profiles keep Soul prominent and do not alter game sta
  assert.ok(positions.size>=3);
  assert.deepEqual(cockpitLayout('__proto__'),{offsetY:0,soulScale:1});
  assert.deepEqual(cockpitLayout(null),{offsetY:0,soulScale:1});
+});
+
+test('v0.4.4 PNG cockpit uses enlarged Soul and shifts shield out of the cockpit',async()=>{
+ const {cockpitLayout}=await import('./dist/cockpit-layout.mjs');
+ for(const id of Object.keys(ARMOR_PATHS)){
+  const profile=cockpitLayout(id);
+  const {images,draws}=await render({...earth,armorPath:id});
+  assert.deepEqual(images,['assets/earth.png','assets/armor/'+id+'.svg','assets/shields/reflective.svg']);
+  const soul=draws[1],shield=draws[2];
+  assert.equal(soul[3],205*profile.soulScale);
+  assert.equal(soul[4],214*profile.soulScale);
+  assert.ok(soul[1]>320&&soul[1]<385);
+  assert.ok(shield[1]>455,'shield should sit to the right of the Soul');
+  assert.ok(shield[3]<500,'shield should be smaller than the entire body');
+ }
 });

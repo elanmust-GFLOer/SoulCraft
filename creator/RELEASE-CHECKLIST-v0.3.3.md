@@ -16,8 +16,8 @@ Use a newly created Soul, without resetting it during the test.
 
 - [x] User reports that GitHub Pages v0.3.3 opens and a new Earth Soul can be created (conversation report; not independently reproduced).
 - [ ] Give the Earth Soul a name; reload; confirm origin and name persist.
-- [ ] Save a daily goal, mark it complete, verify +40 XP and that a second completion the same day does not award more.
-- [ ] Equip, change and remove one cosmetic effect; verify it persists after reload.
+- [x] User reports daily XP awarded and retained after reload (2026-11-03). The exact +40 amount and rejection of a second same-day claim were not separately confirmed manually; both are covered by automated model tests.
+- [x] User reports craft effect activation, switching and persistence after reload (2026-11-03). Removal was not separately confirmed manually; automated model tests cover removal.
 - [x] User reports successful Save/Restore with the newly created Earth Soul on Android (2026-11-03). The exact retained-file handling was not separately confirmed. JSON backups include private goals and are unencrypted.
 - [x] User reports a successful Restore my Soul flow (2026-11-03); preview, confirmation and individual restored fields were not independently observed or itemized. Follow-up field-by-field verification remains open.
 - [ ] Generate **Share my Soul** PNG; confirm the image omits private goals.

@@ -96,3 +96,57 @@ body.no-motion .shield-visual{animation:none}
 @media(max-width:380px){.scene[data-armor-active="true"] .shield-visual{transform:translate(64px,39px) scale(.72)}}
 body.no-motion .guardian-shell,body.no-motion .guardian-cockpit img{animation:none!important}
 @media(prefers-reduced-motion:reduce){.guardian-shell,.guardian-cockpit img{animation:none!important}}
+
+/* v0.4.4 — Soul Presence: one larger living Soul inside a calmer crystal chamber.
+   Alignment and scale use transient display properties, not extra game state. */
+.scene[data-armor-active="true"]{height:420px}
+.scene[data-armor-active="true"] .guardian-shell{
+  transform:translateY(-18px);
+}
+.scene[data-armor-active="true"] .guardian-cockpit{
+  top:calc(50% - 118px + var(--cockpit-offset,0px));
+  width:137px;height:148px;
+  border-radius:48% 48% 40% 40%;
+  background:radial-gradient(ellipse at 51% 34%,#9bf2ba48 0%,#265c49 43%,#112832 84%,#07151e);
+  box-shadow:inset 0 0 21px #d0ffc4b0,0 0 17px #9be7b87d;
+}
+.scene[data-armor-active="true"] .guardian-cockpit img{
+  width:146px;height:154px;
+  transform:scale(var(--cockpit-soul-scale,1));
+  filter:drop-shadow(0 0 14px #edffd3ad) brightness(1.13);
+}
+.scene[data-armor-active="true"] .guardian-cockpit-frame{
+  top:calc(50% - 122px + var(--cockpit-offset,0px));
+  width:146px;height:158px;border-width:5px;
+  border-color:#e1f4b5;
+  border-radius:49% 49% 36% 36%;
+  background:linear-gradient(134deg,#f6fff13d,transparent 29%,#e7ffff0c 64%,transparent 83%);
+  box-shadow:inset 0 0 18px #dcffd0a6,0 0 21px #c7ffd17d;
+}
+.scene[data-armor-active="true"] .shield-visual{
+  transform:translate(102px,41px) scale(.74);
+  filter:drop-shadow(0 0 7px #ddf4b48a);
+}
+.scene[data-armor-active="true"] .scene-caption{
+  bottom:4px;
+}
+@media(max-width:760px){
+  .scene[data-armor-active="true"]{height:414px}
+  .scene[data-armor-active="true"] .guardian-shell{transform:translateY(-18px)}
+  .scene[data-armor-active="true"] .guardian-cockpit{
+    top:calc(50% - 109px + var(--cockpit-offset,0px));width:123px;height:136px;
+  }
+  .scene[data-armor-active="true"] .guardian-cockpit img{width:137px;height:143px}
+  .scene[data-armor-active="true"] .guardian-cockpit-frame{
+    top:calc(50% - 113px + var(--cockpit-offset,0px));width:132px;height:145px;
+  }
+  .scene[data-armor-active="true"] .shield-visual{transform:translate(84px,41px) scale(.72)}
+}
+@media(max-width:380px){
+  .scene[data-armor-active="true"] .shield-visual{transform:translate(72px,39px) scale(.69)}
+}
+body.no-motion .scene[data-armor-active="true"] .guardian-cockpit img{animation:none!important}
+@media(prefers-reduced-motion:reduce){
+  .scene[data-armor-active="true"] .guardian-cockpit img,
+  .scene[data-armor-active="true"] .guardian-shell{animation:none!important}
+}

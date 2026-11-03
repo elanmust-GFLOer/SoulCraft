@@ -1,4 +1,4 @@
-# SoulCraft — Creator v0.4.3 (Guardian Cockpit Polish)
+# SoulCraft — Creator v0.4.4 (Soul Presence Polish)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
@@ -87,3 +87,9 @@ Armor Path is an optional `armorPath` field. It is allowed only for an awakened 
 ## v0.4.3 — cockpit visual refinement
 
 The existing Earth Guardian cockpit now displays a larger Soul with a clearer crystalline frame. Each of five distinct armor SVGs includes additional path-specific shoulder/arm/leg sculpted forms, and the active shield is scaled/offset beside the suit rather than covering its cockpit. Newly generated share PNGs use a larger Soul and cockpit frame. This is **presentation-only**: no data schema, XP economy, armor locks, save, craft, or mood-privacy behavior changed. The SVG visuals are still prototype assets rather than illustrated final production art. Mobile visual approval remains pending.
+
+## v0.4.4 — Soul Presence Polish (implemented)
+
+A/B/C: the Soul image displayed inside an equipped Earth Guardian grows to 146×154 CSS pixels at desktop breakpoints (137×143 for smaller screens) and the glassy cockpit/frame widen accordingly. The central Soul becomes visibly more prominent instead of being merely a small mascot in the suit. Each of five armor paths has a transient vertical offset and visual scale profile in `dist/cockpit-layout.mjs`, shared by the live UI and the new PNG compositor. The free-choice shields are reduced and shifted alongside the armor to avoid obscuring the cockpit; the armor scene gains vertical breathing room so the caption is less likely to overlap its feet. Respect the user's Motion toggle and `prefers-reduced-motion`.
+
+Scope: display-only refinement and extended automated checks, **not** a new distinct Soul evolution, saved armor stat, database migration, or finished illustrated concept art. The existing localStorage key, version-1 backup format and personal data exclusions remain unchanged. Android approval for the visual changes and real-device card rendering is still needed.

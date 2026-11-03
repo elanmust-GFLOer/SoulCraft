@@ -1,6 +1,7 @@
 import {ELEMENTS,CRAFTS,emptyState,localDay,restore,xpOf,completedToday,saveGoal,completeGoal,normalizeName,renameSoul,craftUnlocked,equipCraft,earthEvolution,SHIELDS,shieldUnlocked,equipShield,suggestedShield,ARMOR_PATHS,armorUnlocked,equipArmor} from './model.mjs';
 import {createBackup,parseBackup,shareSummary,SOULCRAFT_URL,MAX_BACKUP_BYTES} from './portability.mjs';
 import {drawShareCard} from './share-card.mjs';
+import {cockpitLayout} from './cockpit-layout.mjs';
 const KEY='soulcraft.creator.v03';
 const $=id=>document.getElementById(id);
 let canSave=true;
@@ -32,6 +33,9 @@ function render(){
  const activeArmor=armorUnlocked(state)?(armorPreview||state.armorPath):null;
  $('scene').dataset.armorActive=String(!!activeArmor);
  $('scene').dataset.armorPath=activeArmor||'classic';
+ const cockpit=cockpitLayout(activeArmor);
+ $('scene').style.setProperty('--cockpit-offset',cockpit.offsetY+'px');
+ $('scene').style.setProperty('--cockpit-soul-scale',String(cockpit.soulScale));
  $('guardian-shell').hidden=!activeArmor;
  $('guardian-cockpit').hidden=!activeArmor;
  $('guardian-cockpit-frame').hidden=!activeArmor;

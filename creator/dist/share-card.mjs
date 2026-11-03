@@ -1,4 +1,5 @@
 import {ELEMENTS,SHIELDS,ARMOR_PATHS} from './model.mjs';
+import {cockpitLayout} from './cockpit-layout.mjs';
 export function shareUrlLines(raw){const url=new URL(raw),text=url.host+url.pathname;if(text.length<=41)return [url.protocol+'//'+text];const k=Math.max(text.lastIndexOf('/',38),text.lastIndexOf('.',38)),at=k>8?k+1:Math.ceil(text.length/2);return [url.protocol+'//'+text.slice(0,at),text.slice(at)];}
 export async function drawShareCard(canvas,summary){
   canvas.width=900;canvas.height=1200;
@@ -19,16 +20,19 @@ export async function drawShareCard(canvas,summary){
     // The existing Evolve Soul is rendered once, INSIDE the armor cockpit.
     const shell=new Image();shell.src='assets/armor/'+summary.armorPath+'.svg';await shell.decode();
     ctx.drawImage(shell,170,185,560,580);
-    ctx.drawImage(image,365,281,170,180);
+    const {offsetY,soulScale}=cockpitLayout(summary.armorPath);
+    const innerW=205*soulScale,innerH=214*soulScale;
+    ctx.drawImage(image,450-innerW/2,354+offsetY*1.7-innerH/2,innerW,innerH);
     ctx.save();ctx.lineWidth=9;ctx.strokeStyle='#c2ed9b';ctx.shadowColor='#bedd8b';ctx.shadowBlur=15;
-    ctx.beginPath();ctx.ellipse(450,368,92,103,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+    ctx.beginPath();ctx.ellipse(450,354+offsetY*1.7,110,119,0,0,Math.PI*2);ctx.stroke();ctx.restore();
   }else{
     ctx.drawImage(image,450-w/2,470-h/2,w,h);
   }
   if(!cockpitArmor&&summary.origin==='earth'&&summary.xp>=40){const layers=['assets/earth-mantle.svg',...(summary.xp>=80?['assets/earth-crown.svg']:[])];for(const path of layers){const layer=new Image();layer.src=path;await layer.decode();ctx.drawImage(layer,450-w/2,470-h/2,w,h);}}
   // Shields are public cosmetic choices. Draw only known artwork above the guardian.
   if(summary.origin==='earth'&&summary.xp>=80&&Object.hasOwn(SHIELDS,summary.shield)){
-    const overlay=new Image();overlay.src='assets/shields/'+summary.shield+'.svg';await overlay.decode();ctx.drawImage(overlay,450-w/2,470-h/2,w,h);
+    const overlay=new Image();overlay.src='assets/shields/'+summary.shield+'.svg';await overlay.decode();if(cockpitArmor){const sw=w*.76,sh=h*.76;ctx.drawImage(overlay,450-sw/2+115,470-sh/2+32,sw,sh);}
+    else ctx.drawImage(overlay,450-w/2,470-h/2,w,h);
   }
 
   let fontSize=58;do{ctx.font=`${fontSize}px Georgia, serif`;if(ctx.measureText(summary.name).width<=770)break;fontSize-=2;}while(fontSize>22);

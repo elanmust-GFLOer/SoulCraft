@@ -4,9 +4,9 @@ One Soul. Three lenses. Five elemental origins.
 
 SoulCraft is an early browser-local prototype. One Evolve Soul develops through Creator (action), with Companion (relationship) and Spark (reflection) planned as later limited previews. Essence Soul is the humanoid frontend guide.
 
-## Current implementation — Creator v0.3.3
+## Current implementation — Creator v0.3.4
 
-Complete Creator source is in [`creator/`](creator/README.md): five origins, awakening, optional naming, one self-reported daily goal worth 40 local XP, three reversible cosmetic effects, JSON backup/validated restore, and a private-goal-free PNG share card. Progress is stored in the browser. No dependency installation or build is needed.
+Complete Creator source (v0.3.3 stable features plus v0.3.4 PWA installation and public share URL) is in [`creator/`](creator/README.md): five origins, awakening, optional naming, one self-reported daily goal worth 40 local XP, three reversible cosmetic effects, JSON backup/validated restore, and a private-goal-free PNG share card. Progress is stored in the browser. No dependency installation or build is needed.
 
 ```sh
 cd creator
@@ -16,7 +16,7 @@ python -m http.server 8000 --directory dist
 
 Open http://localhost:8000. Localhost, GitHub Pages and the hosted Site each have separate browser storage; use Save my Soul / Restore my Soul to transfer progress.
 
-The [owner-private test Site](https://soulcraft-creator-gabriel-v03.tealoffer2.chatgpt.site/) is deployed separately. GitHub and Sites have independent source/deployment histories; a GitHub commit alone does not update that Site. The root GitHub Pages entrypoint redirects to Creator v0.3.3 at `creator/dist/`; earlier v0.2 demos remain under `prototypes/`. GitHub Pages deployment status and browser behavior should be checked independently.
+The [owner-private test Site](https://soulcraft-creator-gabriel-v03.tealoffer2.chatgpt.site/) is deployed separately. GitHub and Sites have independent source/deployment histories; a GitHub commit alone does not update that Site. The root GitHub Pages entrypoint redirects to Creator v0.3.4 at `creator/dist/`; earlier v0.2 demos remain under `prototypes/`. GitHub Pages deployment status and browser behavior should be checked independently.
 
 ## Evidence and boundaries
 

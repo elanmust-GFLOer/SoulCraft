@@ -1,4 +1,4 @@
-# SoulCraft — Creator v0.3.3
+# SoulCraft — Creator v0.3.4 (PWA)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.
 
@@ -31,10 +31,17 @@ This is a prototype, not a secure activity or XP ledger. Goal completion is self
 
 The 0/40/80 XP glow and sparkle states are **not** complete, recognizably distinct character evolutions. Earlier Genesis and simulated 3-of-5 fusion are archived under [prototypes](../prototypes/); fusion is **not** part of Creator v0.3.3. Elemental design notes in [docs](../docs/ELEMENTAL-TRAITS-v0.1.md) describe proposed visuals, not validated psychological traits.
 
+## Home-screen installation (v0.3.4)
+
+The public GitHub Pages Creator now includes a web-app manifest, square PNG icons, and an **Add to Home Screen** control. Browsers supporting `beforeinstallprompt` can show their install prompt; others show manual browser-specific instructions. Installation is optional; no account, service worker, push notifications, or guaranteed offline mode is implemented. The storage key `soulcraft.creator.v03` and backup format remain unchanged. Browser and installed-app storage may differ by platform; make a JSON backup before changing install context.
+
+Share cards and Copy SoulCraft link now use the public GitHub Pages root `https://elanmust-gfloer.github.io/SoulCraft/`. Existing downloaded PNG cards retain the old printed URL. The user must re-export a card for the new URL. This is a public web prototype, not a native Android application.
+
 ## Release history
 
 - v0.3.1 — optional naming and renaming.
 - v0.3.2 — three reversible cosmetic craft effects.
 - v0.3.3 — JSON backup/validated restore and privacy-scoped PNG sharing.
+- v0.3.4 — GitHub Pages PWA manifest, installation guidance, and public share URL.
 
 See the [project README](../README.md), [Creator roadmap](ROADMAP.md), and [overall roadmap](../docs/ROADMAP.md). Artwork and animation sheets remain provisional.

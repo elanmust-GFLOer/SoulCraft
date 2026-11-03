@@ -1,6 +1,6 @@
 import {ELEMENTS,CRAFTS,normalizeName,restore,xpOf} from './model.mjs';
 
-export const SOULCRAFT_URL='https://soulcraft-creator-gabriel-v03.tealoffer2.chatgpt.site/';
+export const SOULCRAFT_URL='https://elanmust-gfloer.github.io/SoulCraft/';
 export const MAX_BACKUP_BYTES=2*1024*1024;
 export function createBackup(state,now=new Date()) {
   return JSON.stringify({format:'soulcraft-backup',backupVersion:1,exportedAt:now.toISOString(),state:restore(JSON.stringify(state))},null,2);

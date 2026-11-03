@@ -111,4 +111,30 @@ $('download-card').onclick=()=>{if(cardBlob)downloadBlob(cardBlob,`soulcraft-${c
 $('native-share').onclick=async()=>{if(!cardBlob)return;try{await navigator.share({title:'My SoulCraft Soul',text:'Meet my Soul. '+SOULCRAFT_URL,files:[new File([cardBlob],'soulcraft-card.png',{type:'image/png'})]});}catch(error){if(error.name!=='AbortError')$('card-status').textContent='Sharing is unavailable here. Download the card and share it from your device instead.';}};
 $('share-link').value=SOULCRAFT_URL;
 $('copy-link').onclick=async()=>{try{await navigator.clipboard.writeText(SOULCRAFT_URL);$('card-status').textContent='SoulCraft link copied. The link does not include your goals or saved progress.';}catch{$('share-link').focus();$('share-link').select();$('card-status').textContent='Select and copy the link below. Your goals are not included.';}};
+// Browser-managed home-screen installation. No application state or storage key is changed.
+let installPrompt=null;
+const installButton=$('install-soulcraft');
+const installHelp=$('install-help');
+const installed=()=>window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+function showInstallHelp(message){installHelp.hidden=false;installHelp.textContent=message;}
+function refreshInstallUI(){
+ if(installed()){installButton.hidden=true;showInstallHelp('SoulCraft is already running from your home screen.');return;}
+ installButton.hidden=false;installButton.textContent=installPrompt?'↗ Install SoulCraft':'↗ Add to Home Screen';
+}
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;refreshInstallUI();});
+window.addEventListener('appinstalled',()=>{installPrompt=null;refreshInstallUI();});
+installButton.onclick=async()=>{
+ if(installed()){refreshInstallUI();return;}
+ if(installPrompt){
+   const prompt=installPrompt;installPrompt=null;
+   try{await prompt.prompt();const choice=await prompt.userChoice;if(choice?.outcome==='accepted'){showInstallHelp('Installation accepted. Find SoulCraft on your home screen.');}else{showInstallHelp('Installation was dismissed. You can add SoulCraft later from your browser menu.');}}
+   catch{showInstallHelp('Use your browser menu to choose Install app or Add to Home screen.');}
+   refreshInstallUI();return;
+ }
+ const ua=navigator.userAgent||'';
+ if(/iPad|iPhone|iPod/.test(ua)){showInstallHelp('In Safari, tap Share, then Add to Home Screen.');}
+ else if(/Android/i.test(ua)){showInstallHelp('Open the browser menu (⋮), then choose Install app or Add to Home screen.');}
+ else{showInstallHelp('Open your browser menu and choose Install SoulCraft, Install app or Create shortcut, if available.');}
+};
+refreshInstallUI();
 render();

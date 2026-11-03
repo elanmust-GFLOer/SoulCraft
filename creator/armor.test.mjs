@@ -86,7 +86,7 @@ test('v0.4.4 PNG cockpit uses enlarged Soul and shifts shield out of the cockpit
   assert.equal(soul[3],205*profile.soulScale);
   assert.equal(soul[4],214*profile.soulScale);
   assert.ok(soul[1]>320&&soul[1]<385);
-  assert.ok(shield[1]>455,'shield should sit to the right of the Soul');
+  assert.ok(shield[1]+shield[3]/2>540,'shield image centre should be to the right of the Soul');
   assert.ok(shield[3]<500,'shield should be smaller than the entire body');
  }
 });

@@ -24,7 +24,7 @@ jobs:
           node-version: '22'
       - name: Run Creator model and portability tests
         working-directory: creator
-        run: node --test model.test.mjs portability.test.mjs pwa.test.mjs evolution.test.mjs
+        run: node --test model.test.mjs portability.test.mjs pwa.test.mjs evolution.test.mjs shield-render.test.mjs
       - name: Check static entrypoint and module files
         run: |
           test -f creator/dist/index.html

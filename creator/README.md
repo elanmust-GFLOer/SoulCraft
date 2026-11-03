@@ -71,3 +71,7 @@ Automated checks cover all five selections, switching, locking, legacy restores,
 ## Android visual observation — 2026-11-03
 
 User-provided screenshots show StoneR (Earth origin, 80 Creator XP, Crystal Guardian) with a visibly rendered Reflective Shield overlay on the right of the character. The Earth Shield panel displays all five options and highlights Reflective Shield as equipped. A selected *Perspective* need produces a matching Companion preview suggestion. These observations confirm rendering and UI states on the user's mobile screen; they do not independently verify switching through all five shields, browser reload persistence, the new Share PNG, or JSON Save/Restore with shield. The visual overlay is currently a separate right-side shield, **not** the fully integrated torso/neck/head cockpit exosuit depicted in the concept poster. That cockpit and five armor silhouettes remain design work, not implemented features.
+
+## Acceptance and next scope
+
+See [Android shield acceptance](SHIELD-ACCEPTANCE-v0.4.1.md) for checked versus unverified observations, and [Guardian cockpit milestone](GUARDIAN-COCKPIT-SCOPE.md) for the proposed five armor silhouettes (not implemented).

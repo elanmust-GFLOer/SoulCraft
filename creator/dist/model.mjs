@@ -17,10 +17,22 @@ export const SHIELDS = {
   core:{name:"Core Shield",motto:"Steady from within",description:"When you want focus and structure.",icon:"✦"},
   halo:{name:"Halo Shield",motto:"A gentle boundary",description:"When you want calm and spaciousness.",icon:"◉"},
 };
+export const ARMOR_PATHS={
+ balanced:{name:'Balanced Guardian',description:'Steady and versatile',icon:'◈'},
+ bastion:{name:'Heavy Bastion',description:'Grounded and resilient',icon:'▣'},
+ sentinel:{name:'Tall Sentinel',description:'Watchful and composed',icon:'♢'},
+ striker:{name:'Compact Striker',description:'Focused and agile',icon:'✧'},
+ titan:{name:'Broad Titan',description:'Bold and protective',icon:'◆'}
+};
+export const armorUnlocked=state=>state?.born===true&&state.origin==='earth'&&xpOf(state)>=80;
+export function equipArmor(state,id){
+ if(!armorUnlocked(state)||(id!==null&&!Object.hasOwn(ARMOR_PATHS,id)))return state;
+ return {...state,armorPath:id};
+}
 export const SHIELD_MOODS = {
   steady:'bulwark', perspective:'reflective', care:'bloom', focus:'core', calm:'halo'
 };
-export const emptyState = () => ({version:1, origin:'fire', name:'', craft:null, shield:null, born:false, events:[], goal:null, motion:true});
+export const emptyState = () => ({version:1, origin:'fire', name:'', craft:null, shield:null, armorPath:null, born:false, events:[], goal:null, motion:true});
 export const craftUnlocked = state => state.born && state.events.length>0;
 export const shieldUnlocked = state => state?.born===true && state.origin==='earth' && xpOf(state)>=80;
 export function equipShield(state,id){
@@ -57,7 +69,8 @@ export function restore(raw) {
     const born=v.born===true;
     const craft=born && events.length>0 && Object.hasOwn(CRAFTS,v.craft) ? v.craft : null;
     const shield=born && v.origin==='earth' && events.length>=2 && Object.hasOwn(SHIELDS,v.shield)?v.shield:null;
-    return {version:1,origin:v.origin,name:normalizeName(v.name)??'',craft,shield,born,events,goal,motion:v.motion!==false};
+    const armorPath=born&&v.origin==='earth'&&events.length>=2&&Object.hasOwn(ARMOR_PATHS,v.armorPath)?v.armorPath:null;
+    return {version:1,origin:v.origin,name:normalizeName(v.name)??'',craft,shield,armorPath,born,events,goal,motion:v.motion!==false};
   } catch { return emptyState(); }
 }
 export const xpOf = state => state.events.length*40;

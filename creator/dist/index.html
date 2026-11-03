@@ -7,13 +7,16 @@
 </head>
 <body>
 <div class="ambient" aria-hidden="true"></div>
-<header class="top"><a class="brand" href="./" aria-label="SoulCraft home"><span>✧</span> SoulCraft</a><span class="build">CREATOR · v0.4.1</span><button class="icon-button" id="motion" aria-pressed="true">◌ <span>Motion</span></button></header>
+<header class="top"><a class="brand" href="./" aria-label="SoulCraft home"><span>✧</span> SoulCraft</a><span class="build">CREATOR · v0.4.2</span><button class="icon-button" id="motion" aria-pressed="true">◌ <span>Motion</span></button></header>
 <main>
   <section class="intro"><p class="eyebrow"><span class="dot"></span> YOUR STORY BEGINS HERE</p><h1 id="headline">A little flame.<br>A journey of your own.</h1><p class="subtitle">Give a small intention a little shape. Your Soul grows alongside you.</p></section>
   <div class="workspace">
     <section class="soul-card" aria-label="Your Evolve Soul">
       <div class="card-top"><div><p class="eyebrow">EVOLVE SOUL</p><h2 id="soul-name">First Flame</h2><div class="soul-identity"><span id="origin-label">Fire Soul</span><button class="text-button" id="rename" hidden>Name your Soul</button></div></div><span class="stage-badge" id="stage-badge">01 · AWAKENING</span></div>
-      <div class="scene" id="scene"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="dust" aria-hidden="true">✦</div><div class="bubble" id="bubble"><span></span></div><img id="character" class="character" src="assets/fire.png" alt="Fire Evolve Soul" hidden><img id="earth-mantle" class="earth-evolution" src="assets/earth-mantle.svg" alt="" aria-hidden="true" hidden><img id="earth-crown" class="earth-evolution earth-crown" src="assets/earth-crown.svg" alt="" aria-hidden="true" hidden><img id="shield-visual" class="shield-visual" alt="" aria-hidden="true" hidden><div class="growth-spark" id="growth-spark" hidden aria-hidden="true">✧</div><div class="craft-effects" aria-hidden="true"><div class="craft-halo"></div><div class="craft-stars"><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div><div class="craft-ribbon"><i></i></div></div><div class="floor"></div><p class="scene-caption" id="scene-caption">A spark of possibility.</p></div>
+      <div class="scene" id="scene"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="dust" aria-hidden="true">✦</div><div class="bubble" id="bubble"><span></span></div><img id="character" class="character" src="assets/fire.png" alt="Fire Evolve Soul" hidden><img id="earth-mantle" class="earth-evolution" src="assets/earth-mantle.svg" alt="" aria-hidden="true" hidden><img id="earth-crown" class="earth-evolution earth-crown" src="assets/earth-crown.svg" alt="" aria-hidden="true" hidden><img id="guardian-shell" class="guardian-shell" src="assets/armor/balanced.svg" alt="" aria-hidden="true" hidden>
+<div id="guardian-cockpit" class="guardian-cockpit" aria-hidden="true" hidden><img id="cockpit-soul" src="assets/earth.png" alt=""></div>
+<div id="guardian-cockpit-frame" class="guardian-cockpit-frame" aria-hidden="true" hidden></div>
+<img id="shield-visual" class="shield-visual" alt="" aria-hidden="true" hidden><div class="growth-spark" id="growth-spark" hidden aria-hidden="true">✧</div><div class="craft-effects" aria-hidden="true"><div class="craft-halo"></div><div class="craft-stars"><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div><div class="craft-ribbon"><i></i></div></div><div class="floor"></div><p class="scene-caption" id="scene-caption">A spark of possibility.</p></div>
       <div class="progress-row"><div><span class="xp" id="xp">0</span><span class="xp-label"> CREATOR XP</span></div><span id="next-stage">Next stage: 40 XP</span></div><div class="progress-track" role="progressbar" id="progress" aria-label="Progress toward the next visual stage" aria-valuemin="0" aria-valuemax="80" aria-valuenow="0"><span id="progress-fill"></span></div>
       <ol class="journey"><li id="step-1" class="current"><i></i><span>Awakening</span></li><li id="step-2"><i></i><span>Growing</span></li><li id="step-3"><i></i><span>Radiance</span></li></ol>
       <p class="gentle">Missing a day never takes away your progress.</p>
@@ -27,6 +30,15 @@
         <div id="done-panel" hidden><span class="done-symbol">✓</span><p class="eyebrow">YOU TOOK A STEP TODAY</p><h2>Small actions leave a little light.</h2><p class="goal-text" id="done-goal"></p><div class="reward">✦ <strong>+40 XP</strong><span>Progress to keep</span></div><p class="muted">Today’s reward is yours. Choose a new goal tomorrow, at your own pace.</p></div>
       </section>
       <section class="craft-card" id="craft-card" aria-labelledby="craft-title" hidden><div class="section-top"><p class="eyebrow">YOUR FIRST CRAFT</p><span class="craft-badge" id="craft-badge">LOCKED · FIRST ACTION</span></div><h2 id="craft-title">A little light, made yours.</h2><p class="muted" id="craft-description">Complete your first Creator goal to unlock three cosmetic effects.</p><div class="craft-options" id="craft-options" role="group" aria-label="Cosmetic effects"></div><p class="craft-status" id="craft-status" role="status">Your first craft is waiting to unfold.</p><button class="text-button" id="remove-craft" hidden>Remove effect</button></section>
+      <section class="armor-card" id="armor-card" aria-labelledby="armor-title" hidden>
+        <div class="section-top"><p class="eyebrow">EARTH GUARDIAN · COCKPIT PROTOTYPE</p><span class="craft-badge">80 XP UNLOCK</span></div>
+        <h2 id="armor-title">Choose a Guardian shell.</h2>
+        <p class="muted">Your Soul stays inside the cockpit. Preview five different armor silhouettes before you equip one. This choice is free to change.</p>
+        <div id="armor-options" class="armor-options" role="group" aria-label="Guardian armor preview"></div>
+        <p class="armor-preview-status" id="armor-preview-status" role="status" aria-live="polite">Select a form to preview it without changing your saved armor.</p>
+        <div class="armor-actions"><button class="secondary" id="equip-armor" type="button" hidden>Equip previewed armor</button><button class="text-button" id="remove-armor" type="button" hidden>Use classic Crystal Guardian</button></div>
+        <p class="craft-status" id="armor-status" role="status">Classic Crystal Guardian equipped.</p>
+      </section>
       <section class="shield-card" id="shield-card" aria-labelledby="shield-title" hidden>
         <div class="section-top"><p class="eyebrow">EARTH GUARDIAN · SHIELD FORMS</p><span class="craft-badge">80 XP UNLOCK</span></div>
         <h2 id="shield-title">Choose your shield.</h2>

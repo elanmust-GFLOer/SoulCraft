@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 330" role="img" aria-label="balanced Guardian shell">
+<defs><linearGradient id="stone" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e7dccb"/><stop offset=".46" stop-color="#9c9485"/><stop offset="1" stop-color="#4c6158"/></linearGradient><linearGradient id="crystal" x2=".8" y2="1"><stop stop-color="#f7ffca"/><stop offset=".6" stop-color="#94d6ad"/><stop offset="1" stop-color="#4e917c"/></linearGradient></defs>
+<g stroke="#dee7b2" stroke-width="3" stroke-linejoin="round">
+<path fill="url(#stone)" d="M109 150 L99 61 L125 35 L130 157 L113 192 L119 211 L100 199Z"/>
+<path fill="url(#stone)" d="M211 150 L221 61 L195 35 L190 157 L207 192 L201 211 L220 199Z"/>
+<path fill="url(#stone)" d="M113 152 L86 159 L77 248 L108 261 L118 206Z"/>
+<path fill="url(#stone)" d="M207 152 L234 159 L243 248 L212 261 L202 206Z"/>
+<path fill="url(#crystal)" d="M70 233 L111 232 L117 281 L85 289 L63 264Z"/>
+<path fill="url(#crystal)" d="M250 233 L209 232 L203 281 L235 289 L257 264Z"/>
+<path fill="url(#stone)" d="M121 203 L157 207 L151 261 L99 311 L75 312 L80 252Z"/>
+<path fill="url(#stone)" d="M199 203 L163 207 L169 261 L221 311 L245 312 L240 252Z"/>
+<path fill="url(#crystal)" d="M75 289 L100 280 L109 323 L65 323Z"/>
+<path fill="url(#crystal)" d="M245 289 L220 280 L211 323 L255 323Z"/>
+<path fill="url(#stone)" d="M112 65 L80 55 L72 130 L117 150Z"/>
+<path fill="url(#stone)" d="M208 65 L240 55 L248 130 L203 150Z"/>
+<path fill="url(#crystal)" d="M144 44 L160 12 L176 44 L169 57 L151 57Z"/>
+<path fill="url(#crystal)" d="M141 165 L160 180 L179 165 L170 205 L150 205Z"/>
+</g>
+<!-- Central opening deliberately stays transparent for the one existing Soul. -->
+<g fill="none" stroke="#94d6ad" stroke-width="3" opacity=".82">
+<path d="M116 106 Q112 48 160 63 Q208 48 204 106 L199 161 L121 161Z"/>
+<path d="M99 185 L95 225M221 185 L225 225"/>
+</g>
+</svg>

@@ -1,3 +1,9 @@
+## Current increment — v0.5.0 Soul Care
+
+Implemented: three daily rhythm tabs, two optional smaller tasks, quick private note, three-tap spark interaction, optional evening reflection, capped non-decaying Bond moments, and backup/restore integration. Creator's existing daily reward remains authoritative. Android/PWA acceptance on the user's device is still required.
+
+Next: validate the complete daily loop with an existing Soul before expanding play, preferences, or generative AI. No scheduled notifications or external AI are part of this release.
+
 # SoulCraft — next development gates
 
 Proposed sequence, 2026-11-02. Naming, the first craft choice, backup/restore, and privacy-scoped card sharing are implemented. Remaining gates are proposals, not completed functionality or promised dates.

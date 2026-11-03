@@ -1,3 +1,17 @@
+## v0.5.0 — Soul Care daily rhythm (2026-11-03)
+
+The daily Creator goal now sits alongside three freely accessible care phases:
+
+- **Feed / Set intentions:** keep one main Creator priority and up to two optional smaller steps; bring forward unfinished steps explicitly.
+- **Play / Explore:** tick smaller steps, save a private note (500 characters), or touch a spark three times for a scripted shared moment.
+- **Rest / Reflect:** optionally confirm the main priority, save a private reflection (1,000 characters), and browse earlier notes/reflections.
+
+Creator XP stays at **+40 once per device-local calendar day** for a self-reported completed main goal. A reflection, smaller task, or play action never awards additional XP. Evening confirmation reuses the existing reward rule. Soul Bond counts at most one shared moment per phase/day; it has no decay, streak requirement, or time lock. Reactions are simple visual changes and predefined text, not an LLM.
+
+Private care records are stored with the existing local Soul, included in JSON backups and shown in the Restore preview as a private-record count. The public share allowlist is unchanged: notes, reflections, tasks, and Bond are excluded. Backups are unencrypted. Existing v1 saves and backups without care remain supported; new care-bearing backups require this version or a later compatible importer. Use **Save note**, **Feed our intentions**, or **Rest** to save edits; typing alone does not save them. A draft retained across midnight is saved under the date on which editing began; only today's priority can earn XP. No care history is automatically deleted. Reset and confirmed Restore replace private care records along with the Soul.
+
+Why this scope: connect the real daily action loop to one Evolve Soul before adding generative conversations, hobby systems, or larger games. See [acceptance record](SOUL-CARE-v0.5.0.md).
+
 # SoulCraft — Creator v0.4.4 (Soul Presence Polish)
 
 Status: browser-local Creator prototype. The complete source and static distribution are tracked in this public repository under `creator/`. The separately hosted owner-private test Site is an independent deployment and is not updated automatically by GitHub commits.

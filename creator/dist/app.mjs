@@ -1,3 +1,4 @@
+import {initCare} from './care-ui.mjs';
 import {ELEMENTS,CRAFTS,emptyState,localDay,restore,xpOf,completedToday,saveGoal,completeGoal,normalizeName,renameSoul,craftUnlocked,equipCraft,earthEvolution,SHIELDS,shieldUnlocked,equipShield,suggestedShield,ARMOR_PATHS,armorUnlocked,equipArmor} from './model.mjs';
 import {createBackup,parseBackup,shareSummary,SOULCRAFT_URL,MAX_BACKUP_BYTES} from './portability.mjs';
 import {drawShareCard} from './share-card.mjs';
@@ -12,6 +13,7 @@ let armorPreview=null; // no state write until explicit equip
 let lastDay=localDay();
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));canSave=true;}catch{canSave=false;}$('save-status').textContent=canSave?'◈ Saved in this browser':'⚠ Saving is unavailable — progress lasts only while this page is open';}
 function notice(text){$('notice').textContent=text;$('notice').hidden=!text;}
+let careUI;
 function render(){
  const el=ELEMENTS[state.origin],xp=xpOf(state),today=localDay(),done=completedToday(state,today),active=state.goal?.day===today;
  document.documentElement.style.setProperty('--accent',el.color);
@@ -105,6 +107,7 @@ function render(){
  for(const e of state.events.slice(-5).reverse()) {const li=document.createElement('li'),date=document.createElement('span'),points=document.createElement('span');date.className='history-date';date.textContent=e.day;points.className='history-xp';points.textContent='+40 XP';li.append(points,date,document.createTextNode(e.goal));$('history').append(li);}
  if(!state.events.length){const li=document.createElement('li');li.className='empty-history';li.textContent='It begins with your first small action.';$('history').append(li);}
  $('save-status').textContent=canSave?'◈ Saved in this browser':'⚠ Saving is unavailable — progress lasts only while this page is open';
+ careUI?.render();
 }
 function validateName(input){const value=normalizeName(input.value);input.setCustomValidity(value===null?'Please choose a name of up to 24 characters.':'');return value!==null;}
 $('name-input').oninput=()=>validateName($('name-input'));
@@ -129,14 +132,14 @@ document.querySelectorAll('[data-mood]').forEach(button=>button.onclick=()=>{
 });
 $('shield-accept').onclick=()=>{const id=suggestedShield(chosenMood);if(!id)return;state=equipShield(state,id);persist();render();$('shield-'+id).focus();};
 $('reset').onclick=()=>$('reset-dialog').showModal();$('cancel-reset').onclick=()=>$('reset-dialog').close();
-$('confirm-reset').onclick=()=>{state=emptyState();editing=false;chosenMood=null;armorPreview=null;$('name-input').value='';$('goal-input').value='';$('goal-input').dispatchEvent(new Event('input'));persist();$('reset-dialog').close();notice('');render();};
-window.addEventListener('storage',event=>{if(event.key===KEY){state=restore(event.newValue);editing=false;chosenMood=null;armorPreview=null;render();}});
+$('confirm-reset').onclick=()=>{state=emptyState();careUI?.reset();editing=false;chosenMood=null;armorPreview=null;$('name-input').value='';$('goal-input').value='';$('goal-input').dispatchEvent(new Event('input'));persist();$('reset-dialog').close();notice('');render();};
+window.addEventListener('storage',event=>{if(event.key===KEY){state=restore(event.newValue);careUI?.reset();editing=false;chosenMood=null;armorPreview=null;render();}});
 function rollover(){const day=localDay();if(day!==lastDay){lastDay=day;editing=false;notice('');render();}}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)rollover();});setInterval(rollover,30000);
 
 // Backup files stay on the device until the user chooses where to keep them.
 function downloadBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
-function downloadBackup(){try{downloadBlob(new Blob([createBackup(state)],{type:'application/json'}),`soulcraft-backup-${localDay()}.json`);notice('Backup download requested. It includes your private goals — keep it somewhere safe.');}catch{notice('The backup could not be downloaded. Your Soul has not changed.');}}
+function downloadBackup(){try{downloadBlob(new Blob([createBackup(state)],{type:'application/json'}),`soulcraft-backup-${localDay()}.json`);notice('Backup download requested. It includes your private goals, notes and reflections — keep it somewhere safe.');}catch{notice('The backup could not be downloaded. Your Soul has not changed.');}}
 $('save-soul').onclick=downloadBackup;
 $('save-before-restore').onclick=downloadBackup;
 let pendingRestore=null;
@@ -149,7 +152,7 @@ $('restore-file').onchange=async()=>{
    const parsed=parseBackup(await file.text());pendingRestore=parsed.state;
    const summary=shareSummary(parsed.state);
    $('restore-summary').replaceChildren();
-   for(const [label,value] of [['Soul',summary.name],['Origin',summary.element+' Soul'],['Progress',summary.xp+' XP · '+parsed.state.events.length+(parsed.state.events.length===1?' completed goal':' completed goals')],['Effect',summary.craft||'None'],['Shield',summary.shield?SHIELDS[summary.shield].name:'None'],['Armor',summary.armorPath?ARMOR_PATHS[summary.armorPath].name:'Classic'],['Active goal',parsed.state.goal?'Included (private)':'None'],['Backup created',new Date(parsed.exportedAt).toLocaleString('en-GB')]]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;$('restore-summary').append(dt,dd);}
+   for(const [label,value] of [['Soul',summary.name],['Origin',summary.element+' Soul'],['Progress',summary.xp+' XP · '+parsed.state.events.length+(parsed.state.events.length===1?' completed goal':' completed goals')],['Effect',summary.craft||'None'],['Shield',summary.shield?SHIELDS[summary.shield].name:'None'],['Armor',summary.armorPath?ARMOR_PATHS[summary.armorPath].name:'Classic'],['Active goal',parsed.state.goal?'Included (private)':'None'],['Private care records',String(parsed.state.care.length)+' days · notes and reflections included'],['Backup created',new Date(parsed.exportedAt).toLocaleString('en-GB')]]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;$('restore-summary').append(dt,dd);}
    $('restore-dialog').showModal();
  }catch(error){pendingRestore=null;$('restore-error').textContent=error.message||'This backup could not be read. Your Soul has not changed.';}
  finally{$('restore-soul').disabled=false;$('restore-file').value='';}
@@ -159,7 +162,7 @@ $('restore-dialog').addEventListener('close',()=>{pendingRestore=null;});
 $('confirm-restore').onclick=()=>{
  if(!pendingRestore)return;
  try{localStorage.setItem(KEY,JSON.stringify(pendingRestore));}catch{$('restore-error').textContent='Restore cancelled: this browser could not save the backup. Your current Soul has not changed.';pendingRestore=null;$('restore-dialog').close();return;}
- state=pendingRestore;armorPreview=null;canSave=true;editing=false;chosenMood=null;$('goal-input').value=state.goal?.text||'';$('goal-input').dispatchEvent(new Event('input'));$('name-input').value='';$('restore-dialog').close();render();notice('Your Soul has been restored in this browser.');
+ state=pendingRestore;careUI?.reset();armorPreview=null;canSave=true;editing=false;chosenMood=null;$('goal-input').value=state.goal?.text||'';$('goal-input').dispatchEvent(new Event('input'));$('name-input').value='';$('restore-dialog').close();render();notice('Your Soul has been restored in this browser.');
 };
 let cardBlob=null,cardOrigin='fire',cardRequest=0;
 $('share-soul').onclick=async()=>{
@@ -197,5 +200,6 @@ installButton.onclick=async()=>{
  else if(/Android/i.test(ua)){showInstallHelp('Open the browser menu (⋮), then choose Install app or Add to Home screen.');}
  else{showInstallHelp('Open your browser menu and choose Install SoulCraft, Install app or Create shortcut, if available.');}
 };
+careUI=initCare({getState:()=>state,commit:next=>{state=next;persist();render();return canSave;},notice});
 refreshInstallUI();
 render();

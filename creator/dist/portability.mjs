@@ -1,4 +1,5 @@
 import {ELEMENTS,CRAFTS,SHIELDS,ARMOR_PATHS,normalizeName,restore,xpOf} from './model.mjs';
+import {validCare} from './soul-care.mjs';
 
 export const SOULCRAFT_URL='https://elanmust-gfloer.github.io/SoulCraft/';
 export const MAX_BACKUP_BYTES=2*1024*1024;
@@ -19,7 +20,7 @@ export function parseBackup(text) {
   if(typeof data.exportedAt!=='string'||!Number.isFinite(Date.parse(data.exportedAt)))fail('The backup date is invalid.');
   const s=data.state;
   if(!s||typeof s!=='object'||Array.isArray(s)||s.version!==1)fail('The Soul data version is not supported.');
-  const allowed=['version','origin','name','craft','shield','armorPath','born','events','goal','motion'];
+  const allowed=['version','origin','name','craft','shield','armorPath','born','events','goal','motion','care'];
   if(Object.keys(s).some(key=>!allowed.includes(key)))fail('The backup contains unsupported Soul fields.');
   if(typeof s.origin!=='string'||!Object.hasOwn(ELEMENTS,s.origin)||typeof s.born!=='boolean'||typeof s.motion!=='boolean')fail('The elemental origin or settings are invalid.');
   if(s.name!==undefined&&(typeof s.name!=='string'||normalizeName(s.name)===null))fail('The Soul name must be no longer than 24 characters.');
@@ -35,6 +36,7 @@ export function parseBackup(text) {
   if(s.craft!==undefined&&s.craft!==null&&(!Object.hasOwn(CRAFTS,s.craft)||!s.born||!s.events.length))fail('The saved cosmetic effect is invalid or locked.');
   if(s.shield!==undefined&&s.shield!==null&&(!Object.hasOwn(SHIELDS,s.shield)||s.origin!=='earth'||!s.born||s.events.length<2))fail('The shield is invalid or unavailable for this Soul.');
   if(s.armorPath!==undefined&&s.armorPath!==null&&(!Object.hasOwn(ARMOR_PATHS,s.armorPath)||s.origin!=='earth'||!s.born||s.events.length<2))fail('The selected armor is invalid or unavailable for this Soul.');
+  if(s.care!==undefined&&(!validCare(s.care)||(!s.born&&s.care.length)))fail('The private Soul Care records are invalid. Your current Soul has not changed.');
   return {state:restore(JSON.stringify(s)),exportedAt:data.exportedAt};
 }
 // This explicit allowlist is the complete public share payload. Never include events or goals.

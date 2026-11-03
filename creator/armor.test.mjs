@@ -50,7 +50,7 @@ test('preview only becomes persisted after explicit equip; UI is not a new Soul'
 
 test('v0.4.3 cockpit has larger readable Soul and all five signature sculpted plate sets',()=>{
  const css=load('style.css'),html=load('index.html'),app=load('app.mjs');
- assert.match(html,/CREATOR · v0\.4\.4/);
+ assert.match(html,/CREATOR · v0\.5\.0/);
  assert.match(css,/\.guardian-cockpit img\{\s*width:122px;height:128px/);
  assert.match(css,/\.scene\[data-armor-active="true"\] \.shield-visual/);
  assert.match(app,/dataset\.armorActive=String\(!!activeArmor\)/);
@@ -60,7 +60,7 @@ test('v0.4.3 cockpit has larger readable Soul and all five signature sculpted pl
 test('v0.4.4 presentation profiles keep Soul prominent and do not alter game state',async()=>{
  const {cockpitLayout}=await import('./dist/cockpit-layout.mjs');
  const app=load('app.mjs'),css=load('style.css'),html=load('index.html');
- assert.match(html,/CREATOR · v0\.4\.4/);
+ assert.match(html,/CREATOR · v0\.5\.0/);
  assert.match(css,/\.guardian-cockpit img\{\s*width:146px;height:154px/);
  assert.match(css,/\.scene\[data-armor-active="true"\]\{height:420px\}/);
  assert.match(app,/cockpitLayout\(activeArmor\)/);

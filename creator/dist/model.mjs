@@ -1,3 +1,4 @@
+import {validCare,updateCare} from './soul-care.mjs';
 export const ELEMENTS = {
   fire: {name:'Fire', en:'Fire', icon:'🔥', color:'#ffaf73', title:'A little flame. A journey of your own.', word:'First Flame'},
   water: {name:'Water', en:'Water', icon:'💧', color:'#8bdfff', title:'A little drop. A journey of your own.', word:'First Flow'},
@@ -32,7 +33,7 @@ export function equipArmor(state,id){
 export const SHIELD_MOODS = {
   steady:'bulwark', perspective:'reflective', care:'bloom', focus:'core', calm:'halo'
 };
-export const emptyState = () => ({version:1, origin:'fire', name:'', craft:null, shield:null, armorPath:null, born:false, events:[], goal:null, motion:true});
+export const emptyState = () => ({version:1, origin:'fire', name:'', craft:null, shield:null, armorPath:null, born:false, events:[], goal:null, motion:true, care:[]});
 export const craftUnlocked = state => state.born && state.events.length>0;
 export const shieldUnlocked = state => state?.born===true && state.origin==='earth' && xpOf(state)>=80;
 export function equipShield(state,id){
@@ -70,7 +71,8 @@ export function restore(raw) {
     const craft=born && events.length>0 && Object.hasOwn(CRAFTS,v.craft) ? v.craft : null;
     const shield=born && v.origin==='earth' && events.length>=2 && Object.hasOwn(SHIELDS,v.shield)?v.shield:null;
     const armorPath=born&&v.origin==='earth'&&events.length>=2&&Object.hasOwn(ARMOR_PATHS,v.armorPath)?v.armorPath:null;
-    return {version:1,origin:v.origin,name:normalizeName(v.name)??'',craft,shield,armorPath,born,events,goal,motion:v.motion!==false};
+    const care=born&&validCare(v.care)?v.care:[];
+    return {version:1,origin:v.origin,name:normalizeName(v.name)??'',craft,shield,armorPath,born,events,goal,motion:v.motion!==false,care};
   } catch { return emptyState(); }
 }
 export const xpOf = state => state.events.length*40;
@@ -83,6 +85,13 @@ export function saveGoal(state,text,day) {
 export function completeGoal(state,day) {
   if(!state.born || completedToday(state,day) || !state.goal || state.goal.day!==day) return state;
   return {...state,events:[...state.events,{day,goal:state.goal.text,xp:40}],goal:null};
+}
+
+export function reflectDay(state,day,journal,confirmGoal=false) {
+  if(typeof journal!=='string'||journal.length>1000)return state;
+  const next=updateCare(state,day,{journal,closed:true},'evening');
+  if(next===state)return state;
+  return confirmGoal?completeGoal(next,day):next;
 }
 
 // Derived presentation only: no save schema or XP rule changes.

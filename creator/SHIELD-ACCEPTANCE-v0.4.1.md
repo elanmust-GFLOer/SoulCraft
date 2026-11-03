@@ -1,6 +1,6 @@
 # Creator v0.4.1 — Earth Shield acceptance checklist
 
-Status: **automated coverage complete; Android acceptance partial** (2026-11-03).
+Status: **user-accepted on Android** (2026-11-03); detailed evidence is user-reported, with screenshot evidence for Reflective and Perspective.
 
 ## Verified so far
 
@@ -10,15 +10,12 @@ Status: **automated coverage complete; Android acceptance partial** (2026-11-03)
 - [x] User screenshots: StoneR Earth, 80 XP, Crystal Guardian and visible Reflective Shield overlay.
 - [x] User screenshots: five options shown; Reflective selected; Perspective produces a Reflective suggestion.
 
-## Android PWA acceptance — still to test
+## Android PWA acceptance — user report
 
-- [ ] Switch Bulwark → Reflective → Bloom → Core → Halo and verify visibly different art.
-- [ ] Close and reopen: StoneR, 80 XP, selected shield and cosmetic craft are preserved.
-- [ ] Unequip: shield disappears, Crystal Guardian stays.
-- [ ] Try an alternative Companion need; decline suggestion and confirm equipped shield remains unchanged.
-- [ ] Save JSON backup first; Restore with preview and approval; verify shield/XP/name/craft. Restore overwrites local progress.
-- [ ] Generate new Share my Soul PNG; verify shield art, shield name, GitHub Pages URL and no private goals.
-- [ ] Check narrow mobile display and reduced-motion preference.
+- [x] User reports all planned shield checks satisfactory on the installed Android PWA (2026-11-03).
+- [x] Prior screenshots directly show Reflective Shield rendering, five choices visible and Perspective recommendation.
+- [x] User reports persistence, switching, preview/accept behavior, Share my Soul and backup workflow satisfactory in aggregate. Exact per-step recordings and screenshots are not available for every shield.
+- [ ] Independent multi-device/manual browser matrix and file-based UI regression capture are not yet performed.
 
 ## Scope boundary
 
